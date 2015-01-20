@@ -1,7 +1,7 @@
 (function (window, $, undefined) {
   "use scrict";
   $(document).on('ready', function() {
-    var game = new Phaser.Game(640, 480, Phaser.CANVAS, 'game');
+    var game = new Phaser.Game(640, 360, Phaser.CANVAS, 'game');
 
     /**
      * Class definition
@@ -33,7 +33,6 @@
         this.background = this.add.sprite(0, 0, 'background');
         this.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
         this.input.onDown.add(this.gofull, this);
-        this.gofull();
       },
       /**
        * Core update loop. Handles collision checks and player input.
@@ -51,6 +50,7 @@
       gofull: function () {
         if (!this.scale.isFullScreen) {
           this.scale.startFullScreen(false);
+          info("full screen mode");
         }
       }
     };

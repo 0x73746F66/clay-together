@@ -1,0 +1,19 @@
+CACHE MANIFEST
+# version: change this to update files in cache
+# v1.0.1
+
+# Explicitly cached 'master entries'.
+CACHE:
+favicon.ico
+index.html
+core/global.js
+core/main.js
+
+# remember to list ALL files you want to be available offline, including images
+
+
+## Resources that require the user to be online.
+NETWORK:
+*
+
+#FALLBACK:
