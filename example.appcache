@@ -1,6 +1,6 @@
 CACHE MANIFEST
 # version: change this to update files in cache
-# v1.0.1
+# v1.0.2
 
 # Explicitly cached 'master entries'.
 CACHE:
@@ -8,6 +8,9 @@ favicon.ico
 index.html
 core/global.js
 core/main.js
+assets/background.png
+assets/paddle.png
+assets/ball.png
 
 # remember to list ALL files you want to be available offline, including images
 
