@@ -1,0 +1,29 @@
+<!doctype html>
+<html manifest="offline.appcache">
+  <head>
+    <meta charset="UTF-8" />
+    <title>example</title>
+    <script async src="//cdn.jsdelivr.net/phaser/2.2.2/phaser.min.js"></script>
+    <script async src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+  </head>
+  <body>
+    <script type="text/javascript" src="core/global.js"></script>
+    <script type="text/javascript">
+      window.Phaser || document.write('<script type="text/javascript" src="assets/lib/phaser-2.2.2.min.js">\x3C/script>');
+      window.jQuery || document.write('<script type="text/javascript" src="assets/lib/jquery-2.1.3.min.js">\x3C/script>');
+      // Check if a new cache is available on page load.
+      window.addEventListener('load', function(e) {
+        window.applicationCache.addEventListener('updateready', function(e) {
+          if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+            info("New version available.\nReloading AppCache");
+            window.location.reload();
+          }
+        }, false);
+        window.applicationCache.addEventListener('noupdate', function(e){
+          warn("Loaded from AppCache\nForget to update .appcache file version?");
+        }, false);
+      }, false);
+    </script>
+    <script type="text/javascript" src="core/main.js"></script>
+  </body>
+</html>

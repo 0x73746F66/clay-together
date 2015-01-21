@@ -43,19 +43,19 @@ function UUIDv3(){
 
   return (typeof crypto === 'object') ? crypto_uuid() : regex_uuid();
 }
-function setCookieNoExp(name, value) 
+function setCookieNoExp(name, value)
 {
   var cookieExp = new Date();     //set 8/06/2012 date object
   cookieExp.setTime(cookieExp.getTime() + (1000 * 60 * 60 * 24 * 365 * 5));  //5 years
   document.cookie = name + "=" + escape(value) + "; path=/; expires=" + cookieExp.toGMTString();
 }
-function getCookie(cookieName) 
+function getCookie(cookieName)
 {
   var theCookie=""+document.cookie;
   var ind=theCookie.indexOf(cookieName+"=");
   if (ind==-1 || cookieName=="") return "";
   var ind1=theCookie.indexOf(";",ind);
-  if (ind1==-1) ind1=theCookie.length; 
+  if (ind1==-1) ind1=theCookie.length;
   return unescape(theCookie.substring(ind+cookieName.length+1,ind1));
 }
 function store(key,item) {

@@ -1,0 +1,37 @@
+{
+  "title":"Ocean Spray",
+  "directions":"Catch the fish - avoid sharks, bones, and sushi.",
+  "background":"#4d4d4d",
+  "font":"#ffffff",
+  "splash":"assets/stage/2/background-640x360.jpg",
+  "points":[{
+      "limit":"10",
+      "sprite":"assets/stage/2/bones.png",
+      "value":"-1"
+    },{
+      "limit":"5",
+      "sprite":"assets/stage/2/sushi.png",
+      "value":"-2"
+    },{
+      "limit":"2",
+      "sprite":"assets/stage/2/shark.png",
+      "value":"-5"
+    },{
+      "limit":"20",
+      "sprite":"assets/stage/2/cod.png",
+      "value":"1"
+    },{
+      "limit":"15",
+      "sprite":"assets/stage/2/eel.png",
+      "value":"3"
+    },{
+      "limit":"10",
+      "sprite":"assets/stage/2/snapper.png",
+      "value":"5"
+    },{
+      "limit":"1",
+      "sprite":"assets/stage/2/marlin.png",
+      "value":"10"
+    }
+   ]
+}

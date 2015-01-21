@@ -1,0 +1,33 @@
+{
+  "title":"Street Games",
+  "directions":"Catch the balls, avoid anything else.",
+  "background":"#4d4d4d",
+  "font":"#ffffff",
+  "splash":"assets/stage/1/background-640x360.png",
+  "points":[{
+      "limit":"15",
+      "sprite":"assets/stage/1/darts.png",
+      "value":"-1"
+    },{
+      "limit":"10",
+      "sprite":"assets/stage/1/pingpong.png",
+      "value":"-2"
+    },{
+      "limit":"20",
+      "sprite":"assets/stage/1/golf.png",
+      "value":"1"
+    },{
+      "limit":"15",
+      "sprite":"assets/stage/1/baseball.png",
+      "value":"2"
+    },{
+      "limit":"10",
+      "sprite":"assets/stage/1/soccer.png",
+      "value":"4"
+    },{
+      "limit":"1",
+      "sprite":"assets/stage/1/basketball.png",
+      "value":"5"
+    }
+   ]
+}
