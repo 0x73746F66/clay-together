@@ -59,17 +59,28 @@ function getCookie(cookieName)
   return unescape(theCookie.substring(ind+cookieName.length+1,ind1));
 }
 function store(key,item) {
+  var text;
   if ((function(){var mod='testHasLocalStorage';try{window.localStorage.setItem(mod,mod);window.localStorage.removeItem(mod);return true;}catch(e){return false;}})() === true){
-    if ("undefined" === typeof item) {
-      return JSON.parse(window.localStorage.getItem(key));
+    if ("undefined" === typeof item && item !== null) {
+      text = window.localStorage.getItem(key);
+      return (text !== null && /^[\],:{}\s]*$/.test(text.replace(/\\["\\\/bfnrtu]/g, '@').
+        replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
+        replace(/(?:^|:|,)(?:\s*\[)+/g, '')) ? JSON.parse(text) : text);
     } else {
-      return window.localStorage.setItem(key,JSON.stringify(item));
+      return window.localStorage.setItem(key,(/^[\],:{}\s]*$/.test(item.replace(/\\["\\\/bfnrtu]/g, '@').
+        replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
+        replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) ? JSON.stringify(item) : item);
     }
   } else {
-    if ("undefined" === typeof item) {
-      return JSON.parse(getCookie(key))
+    if ("undefined" === typeof item && item !== null) {
+      text = getCookie(key);
+      return (text !== null && /^[\],:{}\s]*$/.test(text.replace(/\\["\\\/bfnrtu]/g, '@').
+        replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
+        replace(/(?:^|:|,)(?:\s*\[)+/g, '')) ? JSON.parse(text) : text);
     } else {
-      return setCookieNoExp(key,JSON.stringify(item));
+      return setCookieNoExp(key,(/^[\],:{}\s]*$/.test(item.replace(/\\["\\\/bfnrtu]/g, '@').
+        replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
+        replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) ? JSON.stringify(item) : item);
     }
   }
 }
