@@ -58,29 +58,27 @@ function getCookie(cookieName)
   if (ind1==-1) ind1=theCookie.length;
   return unescape(theCookie.substring(ind+cookieName.length+1,ind1));
 }
+function isJSON(test){
+  if ("string" !== typeof test) return false;
+  return /^[\],:{}\s]*$/.test(test.replace(/\\["\\\/bfnrtu]/g, '@').
+    replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
+    replace(/(?:^|:|,)(?:\s*\[)+/g, ''));
+}
 function store(key,item) {
   var text;
   if ((function(){var mod='testHasLocalStorage';try{window.localStorage.setItem(mod,mod);window.localStorage.removeItem(mod);return true;}catch(e){return false;}})() === true){
-    if ("undefined" === typeof item && item !== null) {
+    if ("undefined" === typeof item) {
       text = window.localStorage.getItem(key);
-      return (text !== null && /^[\],:{}\s]*$/.test(text.replace(/\\["\\\/bfnrtu]/g, '@').
-        replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
-        replace(/(?:^|:|,)(?:\s*\[)+/g, '')) ? JSON.parse(text) : text);
+      return (isJSON(text) ? JSON.parse(text) : text);
     } else {
-      return window.localStorage.setItem(key,(/^[\],:{}\s]*$/.test(item.replace(/\\["\\\/bfnrtu]/g, '@').
-        replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
-        replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) ? JSON.stringify(item) : item);
+      return window.localStorage.setItem(key,isJSON(item) ? JSON.stringify(item) : item);
     }
   } else {
-    if ("undefined" === typeof item && item !== null) {
+    if ("undefined" === typeof item) {
       text = getCookie(key);
-      return (text !== null && /^[\],:{}\s]*$/.test(text.replace(/\\["\\\/bfnrtu]/g, '@').
-        replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
-        replace(/(?:^|:|,)(?:\s*\[)+/g, '')) ? JSON.parse(text) : text);
+      return (isJSON(text) ? JSON.parse(text) : text);
     } else {
-      return setCookieNoExp(key,(/^[\],:{}\s]*$/.test(item.replace(/\\["\\\/bfnrtu]/g, '@').
-        replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
-        replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) ? JSON.stringify(item) : item);
+      return setCookieNoExp(key,isJSON(item) ? JSON.stringify(item) : item);
     }
   }
 }
