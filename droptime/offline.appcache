@@ -1,13 +1,14 @@
 CACHE MANIFEST
 # version: change this to update files in cache
-# v1.0.1
+# v0.0.0
 
 # Explicitly cached 'master entries'.
 CACHE:
 favicon.ico
-index.html
+game.html
 core/global.js
-core/main.js
+core/PhaserGame.js
+assets/lib/phaser-2.2.2.min.js
 
 assets/stage/1/background-640x360.jpg
 assets/stage/1/config.json

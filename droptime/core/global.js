@@ -1,14 +1,14 @@
-function info(txt){
-  !console.info || console.info(txt);
+function info(){
+  !console.info || console.info(arguments);
 }
-function log(txt){
-  !console.log || console.log(txt);
+function log(){
+  !console.log || console.log(arguments);
 }
-function debug(txt){
-  !console.debug || console.debug(txt);
+function debug(){
+  !console.debug || console.debug(arguments);
 }
-function warn(txt){
-  !console.warn || console.warn(txt);
+function warn(){
+  !console.warn || console.warn(arguments);
 }
 function rand(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
