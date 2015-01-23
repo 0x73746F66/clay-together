@@ -3,7 +3,8 @@ var bodyParser = require('body-parser');
 var app        = express();
 var router     = express.Router();
 var port       = process.env.PORT || 3000; // set our port
-var version    = '0.0.1-dev';
+
+var MemoryStore = {};
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -15,8 +16,6 @@ router.use(function(req, res, next) {
   next();
 });
 
-var Game      = require('./Game.js');
-
 // test route to make sure everything is working (accessed at GET http://localhost:3000/api)
 router.get('/', function(req, res) {
   res.json({ message: 'hooray! welcome to our api!' });
@@ -26,66 +25,59 @@ router.get('/', function(req, res) {
 // ----------------------------------------------------
 router.route('/start/')
   .post(function(req, res) {
-    Game.save(req.body, function(err, game) {
-      if (err){
-        res.send(err);
-        return;
+    var game = {
+      map: [
+        [0,1,0,2,5],
+        [0,0,4,0,8],
+        [3,0,0,5,0]
+      ],
+      inventories: {
+        player_red: [],
+        player_blue: [],
+        player_yellow: [],
+        player_green: []
+      },
+      dataset: {
+        empty: 0,
+        player_red: 1,
+        player_blue: 2,
+        player_yellow: 3,
+        player_green: 4,
+        full_chest: 5,
+        empty_chest: 6,
+        key: 7,
+        door: 8
+      },
+      instance: {
+        id: req.body.id,
+        turn: 0
       }
+    };
 
-      res.json(game);
-    });
+    MemoryStore[req.body.id] = game;
+    res.json(game);
   });
+
 router.route('/start/:game_id')
   .get(function(req, res) {
-    Game.find(req.body.game_id,function(err, games) {
-      if (err){
-        res.send(err);
-        return;
-      }
-
-      res.json(games);
-    });
+    var game = MemoryStore[req.body.game_id];
+    res.json(game);
   });
 
 router.route('/game/:game_id')
   .get(function(req, res) {
-    Game.findById(req.params.game_id, function(err, game) {
-      if (err){
-        res.send(err);
-        return;
-      }
-      res.json(game);
-    });
+    var game = req.session[req.body.game_id];
+    res.json(game);
   })
   .put(function(req, res) {
-    Game.findById(req.params.game_id, function(err, game) {
-      if (err){
-        res.send(err);
-        return;
-      }
-
-      game.name = req.body.name;
-      Game.save(game, function(err) {
-        if (err){
-          res.send(err);
-          return;
-        }
-
-        res.json({ message: 'Game updated!' });
-      });
-    });
+    var game = MemoryStore[req.body.game_id];
+    // modify game
+    res.json(game);
   })
   .delete(function(req, res) {
-    Game.remove(req.params.game_id, function(err) {
-      if (err){
-        res.send(err);
-        return;
-      }
-
-      res.json({ message: 'Successfully deleted' });
-    });
+    delete req.session[req.body.game_id]
+    res.json({ message: req.body.game_id+' deleted' });
   });
-
 
 // REGISTER OUR ROUTES -------------------------------
 app.use('/api', router);
