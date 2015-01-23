@@ -6,7 +6,7 @@ exports.save = function (data, callback) {
   return callback(null, game);
 };
 
-exports.find = function (callback) {
+exports.find = function (id, callback) {
   var response = {
     map: [
       [0,1,0,2,5],
@@ -14,10 +14,10 @@ exports.find = function (callback) {
       [3,0,0,5,0]
     ],
     inventories: {
-      red: [],
-      blue: [7],
-      yellow: [],
-      green: []
+      player_red: [],
+      player_blue: [7],
+      player_yellow: [],
+      player_green: []
     },
     dataset: {
       empty: 0,
@@ -29,6 +29,10 @@ exports.find = function (callback) {
       empty_chest: 6,
       key: 7,
       door: 8
+    },
+    instance: {
+      id: id,
+      turn: 0
     }
   };
   return callback(null,response);

@@ -1,3 +1,18 @@
+var game_id = 'uuid';
+$.ajaxSetup({
+   contentType: "application/json",
+   dataType: "json"
+});
+
+$.ajax({
+  type: 'POST',
+  url: '/api/start',
+  data: '{"id":"uuid"}',
+  always: function(res){
+    console.log(res);
+  }
+});
+
 var map_cells_x = 10;
 var map_cells_y = 6;
 
@@ -57,13 +72,13 @@ function getNeighboringEmptyCells(x, y){
 }
 
 function actionMoveClick(){
-	getNeighboringEmptyCells(this_player_x, this_player_y).addClass('cell_choosable');
-	action = 'move';
+  getNeighboringEmptyCells(this_player_x, this_player_y).addClass('cell_choosable');
+  action = 'move';
 }
 
 function actionMoveDrop(){
-	getNeighboringEmptyCells(this_player_x, this_player_y).addClass('cell_choosable');
-	action = 'drop';
+  getNeighboringEmptyCells(this_player_x, this_player_y).addClass('cell_choosable');
+  action = 'drop';
 }
 
 function drawInventoryForPlayer(player, items){
@@ -83,24 +98,20 @@ function handleRefresh(data){
 }
 
 function chooseCell(){
-	var xy = /\d+_\d+/.exec(this.id);
-	action += '_' + xy[0];
-	sendAction();
-	$('.cell_choosable').removeClass('cell_choosable');
+  var xy = /\d+_\d+/.exec(this.id);
+  action += '_' + xy[0];
+  $.put('/game/'+game_id, handleRefresh);
+  $('.cell_choosable').removeClass('cell_choosable');
 }
 
-function sendAction(){
-	alert(action);
-	action = "";
-}
 
 $(document).ready(function(){
-	drawMapGrid(map_cells_x,map_cells_y);
-	$.getJSON('/api/start').success(handleRefresh);
+  drawMapGrid(map_cells_x,map_cells_y);
+  $.get('/api/start/'+game_id, handleRefresh);
 
 
-	$('#action_move').click(actionMoveClick);
-	$('#action_drop').click(actionMoveDrop);
-	$('#map_panel').on('click', '.cell_choosable', chooseCell);
+  $('#action_move').click(actionMoveClick);
+  $('#action_drop').click(actionMoveDrop);
+  $('#map_panel').on('click', '.cell_choosable', chooseCell);
 
 });

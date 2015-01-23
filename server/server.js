@@ -23,7 +23,7 @@ router.get('/', function(req, res) {
 
 // on routes that end in /start
 // ----------------------------------------------------
-router.route('/start')
+router.route('/start/')
   .post(function(req, res) {
     Game.save(req.body, function(err, game) {
       if (err){
@@ -33,9 +33,10 @@ router.route('/start')
 
       res.json(game);
     });
-  })
+  });
+router.route('/start/:game_id')
   .get(function(req, res) {
-    Game.find(function(err, games) {
+    Game.find(req.body.game_id,function(err, games) {
       if (err){
         res.send(err);
         return;
