@@ -86,7 +86,7 @@ function drawInventoryForPlayer(player, items){
   for(var i=0; i<items.length; i++){
     itemHtml += '<img src="objects/' + items[i] + '.png" class="inventory_object"/>';
   }
-  $('#' + player + 'r_inventory').append(itemHtml);
+  $('#' + player + '_inventory').append(itemHtml);
 }
 
 function handleRefresh(data){
