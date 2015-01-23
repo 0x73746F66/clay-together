@@ -6,6 +6,10 @@
 	float: right;
 }
 
+.map_cell.cell_choosable {
+	border: solid thin red;
+}
+
 .map_cell {
 	width:40;
 	height:40;

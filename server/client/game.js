@@ -1,6 +1,6 @@
 var sampleData = { /* Delete once server connection works */
 	map: [
-		[0,1,0,2,5],
+		[0,1,5,2,5],
 		[0,0,4,0,8],
 		[3,0,0,5,0]
 	],
@@ -21,7 +21,6 @@ var objectIds = {
 	player_yellow: 3,
 	player_green: 4,
 	full_chest: 5,
-	empty_chest: 6,
 	key: 7,
 	door: 8
 }
@@ -30,6 +29,9 @@ var map_cells_x = 10;
 var map_cells_y = 6;
 
 var this_player = objectIds.player_red;
+
+var this_player_x;
+var this_player_y;
 
 function drawMapGrid(width, height){
 	var mapHtml = "";
@@ -56,6 +58,10 @@ function drawMapEntities(map){
 		for(var j=0; j<map[0].length; j++){
 			if(map[i][j] != objectIds.empty){
 				$("#map_cell_" + i + "_" + j).append('<img src="objects/' + map[i][j] + '.png" class="map_object"/>');
+				if(this_player == map[i][j]){
+					this_player_x = j;
+					this_player_y = i;
+				}
 			}
 		}
 	}
@@ -66,6 +72,17 @@ function drawInventory(inventories){
 	drawInventoryForPlayer('blue', inventories.blue);
 	drawInventoryForPlayer('yellow', inventories.yellow);
 	drawInventoryForPlayer('green', inventories.green);
+}
+
+function getNeighboringEmptyCells(x, y){
+	return $('#map_cell_' + (y-1) + "_" + x + ':empty,' +
+		'#map_cell_' + (y+1) + "_" + x + ':empty,' +
+		'#map_cell_' + y + "_" + (x-1) + ':empty,' +
+		'#map_cell_' + y + "_" + (x+1) + ':empty');
+}
+
+function actionMoveClick(){
+	getNeighboringEmptyCells(this_player_x, this_player_y).addClass('cell_choosable');
 }
 
 function drawInventoryForPlayer(color, items){
@@ -86,5 +103,10 @@ function handleRefresh(data){
 $(document).ready(function(){
 	drawMapGrid(map_cells_x,map_cells_y);
 	handleRefresh(sampleData);
+
+	$('#action_move').click(function() {
+		actionMoveClick();
+	});
+
 	//window.setTimeout(2);
 });
