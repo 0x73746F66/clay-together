@@ -7,8 +7,31 @@ exports.save = function (data, callback) {
 };
 
 exports.find = function (callback) {
-  var games = [{data:[1,2]},{data:[3,4]}];
-  return callback(null,games);
+  var response = {
+    map: [
+      [0,1,0,2,5],
+      [0,0,4,0,8],
+      [3,0,0,5,0]
+    ],
+    inventories: {
+      red: [],
+      blue: [7],
+      yellow: [],
+      green: []
+    },
+    dataset: {
+      empty: 0,
+      player_red: 1,
+      player_blue: 2,
+      player_yellow: 3,
+      player_green: 4,
+      full_chest: 5,
+      empty_chest: 6,
+      key: 7,
+      door: 8
+    }
+  };
+  return callback(null,response);
 };
 
 exports.findById = function (id, callback) {
