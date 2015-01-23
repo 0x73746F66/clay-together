@@ -6,9 +6,6 @@ var this_player = null;
 var this_player_x;
 var this_player_y;
 
-var map_cells_x = 10;
-var map_cells_y = 6;
-
 function drawMapGrid(width, height){
   var mapHtml = "";
   for(var i=0; i<height; i++){
@@ -70,7 +67,7 @@ function drawInventoryForPlayer(color, items){
 }
 
 function handleRefresh(data){
-  console.log(data);
+  this_player = data.dataset.player_red;
   clearMap();
   drawMapEntities(data);
   clearInventory();
@@ -84,6 +81,4 @@ $(document).ready(function(){
   $('#action_move').click(function() {
     actionMoveClick();
   });
-
-  //window.setTimeout(2);
 });
