@@ -25,18 +25,20 @@ router.get('/', function(req, res) {
 router.route('/start')
   .post(function(req, res) {
     Game.save(req.body, function(err, game) {
-      if (err)
+      if (err){
         res.send(err);
+        return;
+      }
 
       res.json(game);
     });
-
-    res.json({ message: 'game created!' });
   })
   .get(function(req, res) {
     Game.find(function(err, games) {
-      if (err)
+      if (err){
         res.send(err);
+        return;
+      }
 
       res.json(games);
     });
@@ -45,31 +47,37 @@ router.route('/start')
 router.route('/game/:game_id')
   .get(function(req, res) {
     Game.findById(req.params.game_id, function(err, game) {
-      if (err)
+      if (err){
         res.send(err);
+        return;
+      }
       res.json(game);
     });
   })
   .put(function(req, res) {
     Game.findById(req.params.game_id, function(err, game) {
-
-      if (err)
+      if (err){
         res.send(err);
+        return;
+      }
 
       game.name = req.body.name;
       Game.save(game, function(err) {
-        if (err)
+        if (err){
           res.send(err);
+          return;
+        }
 
         res.json({ message: 'Game updated!' });
       });
-
     });
   })
   .delete(function(req, res) {
     Game.remove(req.params.game_id, function(err) {
-      if (err)
+      if (err){
         res.send(err);
+        return;
+      }
 
       res.json({ message: 'Successfully deleted' });
     });
