@@ -5,8 +5,9 @@ var app        = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-var port     = process.env.PORT || 3000; // set our port
-var router = express.Router();
+var port      = process.env.PORT || 3000; // set our port
+var router    = express.Router();
+var Game      = require('./Game.js');
 
 // middleware to use for all requests
 router.use(function(req, res, next) {
@@ -19,43 +20,19 @@ router.get('/', function(req, res) {
   res.json({ message: 'hooray! welcome to our api!' });
 });
 
-var Game = function(){
-  this.name;
-  return this;
-};
-Game.prototype = {
-  save: function(callback){
-
-  },
-  get: function(callback){
-
-  },
-  find: function(callback){
-
-  },
-  findById: function(id, callback){
-
-  },
-  remove: function(callback){
-
-  }
-}
-
 // on routes that end in /start
 // ----------------------------------------------------
 router.route('/start')
-  // create a game (accessed at POST http://localhost:3000/start)
   .post(function(req, res) {
-    Game.name = req.body.name;
-
-    Game.save(function(err) {
+    Game.save(req.body, function(err, game) {
       if (err)
         res.send(err);
 
-      res.json({ message: 'game created!' });
+      res.json(game);
     });
+
+    res.json({ message: 'game created!' });
   })
-  // get all the games (accessed at GET http://localhost:3000/api/games)
   .get(function(req, res) {
     Game.find(function(err, games) {
       if (err)
@@ -65,9 +42,7 @@ router.route('/start')
     });
   });
 
-// on routes that end in /games/:game_id
-// ----------------------------------------------------
-router.route('/games/:gameid')
+router.route('/game/:game_id')
   .get(function(req, res) {
     Game.findById(req.params.game_id, function(err, game) {
       if (err)
@@ -82,7 +57,7 @@ router.route('/games/:gameid')
         res.send(err);
 
       game.name = req.body.name;
-      game.save(function(err) {
+      Game.save(game, function(err) {
         if (err)
           res.send(err);
 
@@ -92,9 +67,7 @@ router.route('/games/:gameid')
     });
   })
   .delete(function(req, res) {
-    Game.remove({
-      _id: req.params.game_id
-    }, function(err, game) {
+    Game.remove(req.params.game_id, function(err) {
       if (err)
         res.send(err);
 
