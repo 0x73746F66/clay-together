@@ -6,6 +6,8 @@ var this_player = null;
 var this_player_x;
 var this_player_y;
 
+var action;
+
 function drawMapGrid(width, height){
   var mapHtml = "";
   for(var i=0; i<height; i++){
@@ -55,7 +57,13 @@ function getNeighboringEmptyCells(x, y){
 }
 
 function actionMoveClick(){
-  getNeighboringEmptyCells(this_player_x, this_player_y).addClass('cell_choosable');
+	getNeighboringEmptyCells(this_player_x, this_player_y).addClass('cell_choosable');
+	action = 'move';
+}
+
+function actionMoveDrop(){
+	getNeighboringEmptyCells(this_player_x, this_player_y).addClass('cell_choosable');
+	action = 'drop';
 }
 
 function drawInventoryForPlayer(player, items){
@@ -74,11 +82,23 @@ function handleRefresh(data){
   drawInventory(data.inventories);
 }
 
-$(document).ready(function(){
-  drawMapGrid(map_cells_x,map_cells_y);
-  $.getJSON('/api/start').success(handleRefresh);
+function chooseCell(){
+	var xy = /\d+_\d+/.exec(this.id);
+	action += '_' + xy[0];
+	sendAction();
+}
 
-  $('#action_move').click(function() {
-    actionMoveClick();
-  });
+function sendAction(){
+	alert(action);
+}
+
+$(document).ready(function(){
+	drawMapGrid(map_cells_x,map_cells_y);
+	$.getJSON('/api/start').success(handleRefresh);
+
+	
+	$('#action_move').click(actionMoveClick);
+	$('#action_drop').click(actionMoveDrop);
+	$('#map_panel').on('click', '.cell_choosable', chooseCell);
+
 });
