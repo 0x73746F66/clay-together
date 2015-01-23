@@ -1,20 +1,38 @@
 var express    = require('express');
 var bodyParser = require('body-parser');
 var app        = express();
+var router     = express.Router();
+var port       = process.env.PORT || 3000; // set our port
+var version    = '0.0.1-dev1';
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use('/play', express.static(__dirname + '/client'));
+app.use('/phaser', express.static(__dirname + '/client/phaser.html'));
 
-var port      = process.env.PORT || 3000; // set our port
-var router    = express.Router();
-var Game      = require('./Game.js');
+app.use('/offline.appcache', function(req, res) {
+  console.log('in');
+  res.setHeader("Content-Type", "text/cache-manifest");
+  res.send('CACHE MANIFEST\
+    # v'+version+'\
+    CACHE:\
+    favicon.ico\
+    game.html\
+    core/global.js\
+    core/PhaserGame.js\
+    assets/lib/phaser-2.2.2.min.js\
+    NETWORK:\
+    *\
+  ');
+});
 
 // middleware to use for all requests
 router.use(function(req, res, next) {
-  console.log('Something is happening.');
+  res.setHeader("Access-Control-Allow-Origin", "*");
   next();
 });
+
+var Game      = require('./Game.js');
 
 // test route to make sure everything is working (accessed at GET http://localhost:3000/api)
 router.get('/', function(req, res) {

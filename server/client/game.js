@@ -100,18 +100,24 @@ function handleRefresh(data){
 function chooseCell(){
   var xy = /\d+_\d+/.exec(this.id);
   action += '_' + xy[0];
-  $.put('/game/'+game_id, handleRefresh);
-  $('.cell_choosable').removeClass('cell_choosable');
+  $.ajax({
+    type: 'PUT',
+    url: '/api/game/'+game_id,
+    data: JSON.stringify({action:action}),
+    success: function(res){
+      console.log(res);
+      $('.cell_choosable').removeClass('cell_choosable');
+    }
+  });
 }
-
 
 $(document).ready(function(){
   drawMapGrid(map_cells_x,map_cells_y);
   $.get('/api/start/'+game_id, handleRefresh);
 
 
-  $('#action_move').click(actionMoveClick);
-  $('#action_drop').click(actionMoveDrop);
-  $('#map_panel').on('click', '.cell_choosable', chooseCell);
+  $(document).on('click', '#action_move', actionMoveClick);
+  $(document).on('click', '#action_drop', actionMoveDrop);
+  $(document).on('click', '.cell_choosable', chooseCell);
 
 });
