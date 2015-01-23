@@ -86,17 +86,19 @@ function chooseCell(){
 	var xy = /\d+_\d+/.exec(this.id);
 	action += '_' + xy[0];
 	sendAction();
+	$('.cell_choosable').removeClass('cell_choosable');
 }
 
 function sendAction(){
 	alert(action);
+	action = "";
 }
 
 $(document).ready(function(){
 	drawMapGrid(map_cells_x,map_cells_y);
 	$.getJSON('/api/start').success(handleRefresh);
 
-	
+
 	$('#action_move').click(actionMoveClick);
 	$('#action_drop').click(actionMoveDrop);
 	$('#map_panel').on('click', '.cell_choosable', chooseCell);
