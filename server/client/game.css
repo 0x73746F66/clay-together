@@ -1,72 +1,72 @@
 #game {
-	width:600;
+  width:600;
 }
 
 #map_panel {
-	float: right;
+  float: right;
 }
 
 .map_cell.cell_choosable {
-	border: solid thin red;
+  border: solid thin red;
 }
 
 .map_cell {
-	width:40;
-	height:40;
-	float:left;
-	margin: 1px;
-	text-align: center;
-	background-size: 100% 100%;
+  width:40;
+  height:40;
+  float:left;
+  margin: 1px;
+  text-align: center;
+  background-size: 100% 100%;
 
-	/* tmp until art */
-	border: solid thin gray;
-	background-color: #999999;
+  /* tmp until art */
+  border: solid thin gray;
+  background-color: #999999;
 }
 
 .map_row {
-	clear:both;
+  clear:both;
 }
 
 .action_button {
-	width: 38%;
-	padding: 3%;
-	margin: 1%;
-	border: solid thin #660000;
-	display: inline-block;
-	text-align: center;
-	cursor: pointer; 
+  width: 38%;
+  padding: 3%;
+  margin: 1%;
+  border: solid thin #660000;
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
 }
 
 #actions_panel {
-	width: 150;
-	float: right;
+  width: 150;
+  float: right;
 }
 
 .player_inventory {
-	width: 100;
-	height: 100;
-	float: left;
-	margin: 1px;
+  width: 100;
+  height: 100;
+  float: left;
+  margin: 1px;
 
-	border:solid thin gray;
+  border:solid thin gray;
 }
 
 #players_panel {
-	clear: both;
+  clear: both;
 }
 
-#player_inventory_red {
-	background-color: #990000;
+#player_red_inventory {
+  background-color: #990000;
 }
 
-#player_inventory_blue {
-	background-color: #000099;
+#player_blue_inventory {
+  background-color: #000099;
 }
 
-#player_inventory_green {
-	background-color: #009900;
+#player_green_inventory {
+  background-color: #009900;
 }
 
-#player_inventory_yellow {
-	background-color: #999900;
+#playeryellow_inventory {
+  background-color: #999900;
 }

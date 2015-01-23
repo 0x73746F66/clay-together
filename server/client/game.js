@@ -41,10 +41,10 @@ function drawMapEntities(response){
 }
 
 function drawInventory(inventories){
-  drawInventoryForPlayer('red', inventories.red);
-  drawInventoryForPlayer('blue', inventories.blue);
-  drawInventoryForPlayer('yellow', inventories.yellow);
-  drawInventoryForPlayer('green', inventories.green);
+  drawInventoryForPlayer('player_red', inventories.player_red);
+  drawInventoryForPlayer('player_blue', inventories.player_blue);
+  drawInventoryForPlayer('player_yellow', inventories.player_yellow);
+  drawInventoryForPlayer('player_green', inventories.player_green);
 }
 
 function getNeighboringEmptyCells(x, y){
@@ -58,12 +58,12 @@ function actionMoveClick(){
   getNeighboringEmptyCells(this_player_x, this_player_y).addClass('cell_choosable');
 }
 
-function drawInventoryForPlayer(color, items){
+function drawInventoryForPlayer(player, items){
   var itemHtml = '';
   for(var i=0; i<items.length; i++){
     itemHtml += '<img src="objects/' + items[i] + '.png" class="inventory_object"/>';
   }
-  $('#player_inventory_' + color).append(itemHtml);
+  $('#' + player + 'r_inventory').append(itemHtml);
 }
 
 function handleRefresh(data){
