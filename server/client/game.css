@@ -47,7 +47,7 @@
   background-size: 100% 100%;
   background-image: url(./objects/grass_round_tile.png);
 
-  /* tmp until art 
+  /* tmp until art
   border: solid thin gray;
   background-color: #999999;*/
 }
@@ -57,27 +57,53 @@
 }
 
 #action_move {
-  background-image: url('./ui/move_green_btn.png');
+  background-image: url('./ui/move_btn_up.png');
+}
+#action_move:active {
+  background-image: url('./ui/move_btn_down.png');
+}
+#action_move[disabled] {
+  background-image: url('./ui/move_btn_disabled.png');
 }
 
-#action_move:active {
-  background-image: url('./ui/move_red_btn.png');
+#action_drop {
+  background-image: url('./ui/drop_btn_up.png');
+}
+#action_drop:active {
+  background-image: url('./ui/drop_btn_down.png');
+}
+#action_drop[disabled] {
+  background-image: url('./ui/drop_btn_disabled.png');
+}
+
+#action_interact {
+  background-image: url('./ui/interact_btn_up.png');
+}
+#action_interact:active {
+  background-image: url('./ui/interact_btn_down.png');
+}
+#action_interact[disabled] {
+  background-image: url('./ui/interact_btn_disabled.png');
+}
+
+#action_skip {
+  background-image: url('./ui/skip_btn_up.png');
+}
+#action_skip:active {
+  background-image: url('./ui/skip_btn_down.png');
+}
+#action_skip[disabled] {
+  background-image: url('./ui/skip_btn_disabled.png');
 }
 
 .action_button {
-  width: 150px;
-  height: 88px;
-  padding: 3%;
-  margin: 1%;
+  width: 100px;
+  height: 100px;
   display: inline-block;
-  text-align: center;
   cursor: pointer;
   background-size: 100% 100%;
   border: none;
   background-color: transparent;
-  /*text-indent: -9999px;
-  white-space: nowrap;
-  overflow: hidden;*/
 }
 
 .action_button:disabled {
@@ -97,8 +123,7 @@
   margin: 12px;
   padding:10px;
   background-size: 100% 100%;
-
-  border:solid thin gray;
+  border: none;
 }
 
 img.player_icon {
