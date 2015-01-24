@@ -81,6 +81,12 @@ function getNeighboringEmptyCells(h, v){
     '#map_cell_' + h + "_" + (v-1) + ':empty,' +
     '#map_cell_' + h + "_" + (v+1) + ':empty');
 }
+function clearChoosableOnNeighboringCells(h, v){
+  $('#map_cell_' + (h-1) + "_" + v + ',' +
+    '#map_cell_' + (h+1) + "_" + v + ',' +
+    '#map_cell_' + h + "_" + (v-1) + ',' +
+    '#map_cell_' + h + "_" + (v+1)).removeClass('cell_choosable');
+}
 
 function getNeighboringInteractableCells(h, v, inventory){
   var neighboringObjects =  $('#map_cell_' + (h-1) + "_" + v + ' ,' +
@@ -104,17 +110,19 @@ function getNeighboringInteractableCells(h, v, inventory){
 
 
 function actionInteractClick(){
+  clearChoosableOnNeighboringCells(this_player.h, this_player.v);
   getNeighboringInteractableCells(this_player.h, this_player.v, this_player.inventory).addClass('cell_choosable');
   action = 'interact';
 }
 
 function actionMoveClick(){
-  console.log("playing");
+  clearChoosableOnNeighboringCells(this_player.h, this_player.v);
   getNeighboringEmptyCells(this_player.h, this_player.v).addClass('cell_choosable');
   action = 'move';
 }
 
 function actionDropClick(){
+  clearChoosableOnNeighboringCells(this_player.h, this_player.v);
   getNeighboringEmptyCells(this_player.h, this_player.v).addClass('cell_choosable');
   action = 'drop';
 }
@@ -204,7 +212,6 @@ function submitAction(){
     url: '/api/game/'+game_id,
     data: JSON.stringify({action:action, player_id: this_player.id}),
     success: function(res){
-      console.log(res);
       $('.cell_choosable').removeClass('cell_choosable');
       showMessage('your action: '+action,'info');
     }
