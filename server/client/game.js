@@ -102,8 +102,6 @@ function handleRefresh(data){
   clearInventory();
   drawInventory(data.players);
   drawPlayers(data.players);
-
-  $('#action_skip').attr('disabled',false);
 }
 
 function createGame(){
@@ -125,8 +123,6 @@ function createGame(){
             return;
           }
           handleRefresh(res);
-          $('#createGame').hide();
-          $('#game').fadeIn();
           showMessage('New game started - waiting for team to join','success');
           bindUnload();
           setTimeout(function(){
@@ -139,9 +135,7 @@ function createGame(){
     }
     initializeOnce(res);
     handleRefresh(res);
-    $('#createGame').hide();
     $('.player_icon').hide();
-    $('#game').fadeIn();
     showMessage('Welcome player '+(++res.profile) + ' - waiting for team to join','info');
     bindUnload();
   });
@@ -164,7 +158,9 @@ function initializeOnce(data){
   game_id = data.instance.id;
   this_player = data.players[data.profile];
   this_player.id = data.profile;
-    pollForNewTurns();
+  pollForNewTurns();
+  $('#createGame').hide();
+  $('#game').fadeIn();
 }
 
 function chooseCell(){
@@ -198,6 +194,7 @@ function pollForNewTurns(){
       if (lastInstanceTurn === -1 && res.profile === 3) {
         $('.player_icon').fadeIn('slow');
         $('#action_move').attr('disabled', false);
+        $('#action_skip').attr('disabled',false);
         showMessage('Started', 'info');
         lastInstanceTurn = 0;
       }
