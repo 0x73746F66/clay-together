@@ -91,11 +91,12 @@ img.map_object {
 }
 
 .player_inventory {
-  width: 60;
-  height: 60;
+  width:50px;
+  height:50px;
   float: left;
-  margin: 1px;
-  padding:8px;
+  margin: 12px;
+  padding:10px;
+  background-size: 100% 100%;
 
   border:solid thin gray;
 }
@@ -106,22 +107,27 @@ img.map_object {
   left:0;
 }
 
+.inventory_object{
+  padding:2px;
+}
+
 #players_panel {
-  float:left;
+  float:right;
+  margin:15px;
 }
 
 #player_0_inventory {
-  background-color: #990000;
+  background-image: url('./ui/box_red.png');
 }
 
 #player_1_inventory {
-  background-color: #000099;
+  background-image: url('./ui/box_blue.png');
 }
 
 #player_2_inventory {
-  background-color: #999900;
+  background-image: url('./ui/box_yellow.png');
 }
 
 #player_3_inventory {
-  background-color: #009900;
+  background-image: url('./ui/box_green.png');
 }
