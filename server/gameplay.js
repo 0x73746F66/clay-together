@@ -1,5 +1,6 @@
 var maps = require('./maps.js');
 var dataset = {
+      collectables: [7,11,12,14],
       empty: 0,
       player_red: 1,
       player_blue: 2,
@@ -13,7 +14,8 @@ var dataset = {
       water: 10,
       bucket: 11,
       extinguisher: 12,
-      empty_chest: 13
+      empty_chest: 13,
+      boulder: 14
   };
 
 var PLAYER_COUNT = 4;
@@ -43,27 +45,29 @@ function nextTurn(gamestate){
       }
 
       if('interact' == actionParsed[1]){
-      	if(dataset.full_chest == map[actionParsed[3]][actionParsed[2]]){
-		    var chest_content = gamestate.chests[actionParsed[3]+'_'+actionParsed[2]];
-	        map[actionParsed[3]][actionParsed[2]] = dataset.empty_chest;
-	        gamestate.players[i].inventory = chest_content;
-	        console.log("Opened chest");
-      	}
-      	else if(current_inventory == dataset.bucket  && map[actionParsed[3]][actionParsed[2]] == dataset.water){
-      		gamestate.players[i].inventory = dataset.extinguisher;
-	        console.log("Collected water");
-      	}
-      	else if(current_inventory == dataset.extinguisher  && map[actionParsed[3]][actionParsed[2]] == dataset.fire){
-      		gamestate.players[i].inventory = 0;
-      		map[actionParsed[3]][actionParsed[2]] = 0;
-	        console.log("Put out fire");
-      	}
-      	else if (current_inventory == dataset.empty && map[actionParsed[3]][actionParsed[2]] !== dataset.empty){
-       		console.log('make sure we can add this item to our inventory');
-      	}
-      	else {
-	        console.log("Don't know what to do with this");
-      	}
+        if(dataset.full_chest == map[actionParsed[3]][actionParsed[2]]){
+        var chest_content = gamestate.chests[actionParsed[3]+'_'+actionParsed[2]];
+          map[actionParsed[3]][actionParsed[2]] = dataset.empty_chest;
+          gamestate.players[i].inventory = chest_content;
+          console.log("Opened chest");
+        }
+        else if(current_inventory == dataset.bucket  && map[actionParsed[3]][actionParsed[2]] == dataset.water){
+          gamestate.players[i].inventory = dataset.extinguisher;
+          console.log("Collected water");
+        }
+        else if(current_inventory == dataset.extinguisher  && map[actionParsed[3]][actionParsed[2]] == dataset.fire){
+          gamestate.players[i].inventory = 0;
+          map[actionParsed[3]][actionParsed[2]] = 0;
+          console.log("Put out fire");
+        }
+        else if (current_inventory == dataset.empty && dataset.collectables.indexOf(map[actionParsed[3]][actionParsed[2]]) !== -1){
+          gamestate.players[i].inventory = map[actionParsed[3]][actionParsed[2]];
+          map[actionParsed[3]][actionParsed[2]] = dataset.empty;
+          console.log("Collected item");
+        }
+        else {
+          console.log("Don't know what to do with this");
+        }
       }
     }
   }
