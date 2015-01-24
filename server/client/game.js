@@ -4,6 +4,7 @@ var map_cells_h = 10;
 var map_cells_v = 6;
 var action;
 var lastInstanceTurn = -1;
+var dataset = {};
 
 var interactsWith = [];
 interactsWith[7] = 8; // Key with door
@@ -91,7 +92,13 @@ function getNeighboringInteractableCells(h, v, inventory){
     return neighboringObjects.filter(':has( > img[src="objects/' + interactsWith[inventory] + '.png"])');
   }
   else {
-    return neighboringObjects.filter(':has(> img[src="objects/5.png"])');
+    var selectors = [];
+    selectors.push(':has(> img[src="objects/5.png"])');
+    for (var iter=0,len=dataset.collectables.length;iter<len;iter++) {
+      selectors.push(':has(> img[src="objects/'+dataset.collectables[iter]+'.png"])');
+    }
+    //console.log('selectors',selectors);
+    return neighboringObjects.filter(selectors.join(' , '));
   }
 }
 
@@ -129,7 +136,7 @@ function handleRefresh(data){
   var player_id = this_player.id;
   this_player = data.players[this_player.id];
   this_player.id = player_id;
-
+  dataset = data.dataset;
   clearMap();
   drawMapEntities(data);
   clearInventory();
