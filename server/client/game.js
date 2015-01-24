@@ -4,15 +4,6 @@ $.ajaxSetup({
    dataType: "json"
 });
 
-$.ajax({
-  type: 'POST',
-  url: '/api/start',
-  data: '{"id":"uuid"}',
-  always: function(res){
-    console.log(res);
-  }
-});
-
 var map_cells_x = 10;
 var map_cells_y = 6;
 
@@ -97,6 +88,33 @@ function handleRefresh(data){
   drawInventory(data.inventories);
 }
 
+function createGame(){
+  var secret = $('#secret').val();
+  $.get('/api/start/'+secret, function(res){
+    if (!res.instance || res.instance.id != secret){
+      $.ajax({
+        type: 'POST',
+        url: '/api/start',
+        data: JSON.stringify({id:secret}),
+        success: function(res){
+          if (!res.instance || res.instance.id != secret){
+            console.log(res);
+            return;
+          }
+          handleRefresh(res);
+          $('#createGame').hide();
+          $('#game').fadeIn();
+          return;
+        }
+      });
+      return;
+    }
+    handleRefresh(res);
+    $('#createGame').hide();
+    $('#game').fadeIn();
+  });
+}
+
 function chooseCell(){
   var xy = /\d+_\d+/.exec(this.id);
   action += '_' + xy[0];
@@ -113,9 +131,7 @@ function chooseCell(){
 
 $(document).ready(function(){
   drawMapGrid(map_cells_x,map_cells_y);
-  $.get('/api/start/'+game_id, handleRefresh);
-
-
+  $(document).on('click', '#start', createGame)
   $(document).on('click', '#action_move', actionMoveClick);
   $(document).on('click', '#action_drop', actionMoveDrop);
   $(document).on('click', '.cell_choosable', chooseCell);

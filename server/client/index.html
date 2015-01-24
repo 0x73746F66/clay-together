@@ -5,7 +5,11 @@
     <link rel="stylesheet" type="text/css" href="game.css" />
   </head>
   <body>
-    <div id="game">
+    <div id="createGame">
+      <input type="text" id="secret" name="secret" placeholder="join secret game">
+      <button id="start" type="button">Start</button>
+    </div>
+    <div id="game" style="display:none;">
       <div id="actions_panel">
         <div id="action_move" class="action_button">Move</div>
         <div id="action_drop" class="action_button">Drop</div>

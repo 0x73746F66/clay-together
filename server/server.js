@@ -60,7 +60,7 @@ router.route('/start/')
 
 router.route('/start/:game_id')
   .get(function(req, res) {
-    var game = MemoryStore[req.body.game_id];
+    var game = MemoryStore[req.params.game_id]||{};
     res.json(game);
   });
 
