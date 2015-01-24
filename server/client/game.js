@@ -63,18 +63,21 @@ function drawMapEntities(response){
         $("#map_cell_" + h + "_" + v).append('<img src="objects/' + response.map[v][h] + '.png" class="map_object"/>');
         if(!!response.dataset.animated[response.map[v][h]]){
           $("#map_cell_" + h + "_" + v + " > img").hide();
-          var animation_properties = response.dataset.animated[response.map[v][h]];
-          var anim = $(
-            '<div class="map_object" style="background-image:url(objects/'+response.map[v][h] + '.png); ' +
-            ' background-size: '+ animation_properties.no_of_frames +'00% 100%;">').sprite(
-            animation_properties);
-          $("#map_cell_" + h + "_" + v).append(anim);
+          addDecorativeAnimation(response.map[v][h], response.dataset.animated[response.map[v][h]], v, h);
         }
       } else if (response.bridges.indexOf(h+'_'+v) !== -1) {
         $("#map_cell_" + h + "_" + v).addClass('bridge');
       }
     }
   }
+}
+
+function addDecorativeAnimation(objectId, animation_properties, v, h){
+  var anim = $(
+    '<div class="map_object" style="background-image:url(objects/'+objectId + '.png); ' +
+    ' background-size: '+ animation_properties.no_of_frames +'00% 100%;">').sprite(
+    animation_properties);
+  $("#map_cell_" + h + "_" + v).append(anim);
 }
 
 function drawPlayers(players){
