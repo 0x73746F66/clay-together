@@ -11,6 +11,7 @@ var this_player = null;
 
 var action;
 
+<<<<<<< HEAD
 function showMessage(text, type) {
   if ('undefined' === typeof type) type = 'error';
   $('#message').removeClass('info success warn error').addClass(type).text(text);
@@ -19,6 +20,9 @@ function showMessage(text, type) {
 function hideMessage() {
   $('#message').removeClass('info success warn error').empty();
 }
+=======
+var lastInstanceTurn = -1;
+>>>>>>> Polling for updates
 
 function drawMapGrid(width, height){
   var mapHtml = "";
@@ -89,8 +93,6 @@ function drawInventoryForPlayer(player, items){
 
 function handleRefresh(data){
   hideMessage();
-  game_id = data.instance.id;
-  this_player = data.players[data.profile];
   clearMap();
   drawMapEntities(data);
   clearInventory();
@@ -111,6 +113,7 @@ function createGame(){
         url: '/api/start',
         data: JSON.stringify({id:game_id}),
         success: function(res){
+          initializeOnce(res);
           if (!res.instance || res.instance.id != game_id){
             console.log(res);
             return;
@@ -124,11 +127,19 @@ function createGame(){
       });
       return;
     }
+    initializeOnce(res);
     handleRefresh(res);
     $('#createGame').hide();
     $('#game').fadeIn();
     showMessage('Welcome player '+(++res.profile),'info');
   });
+}
+
+function initializeOnce(data){
+  game_id = data.instance.id;
+  this_player = data.players[data.profile];
+  this_player.id = data.profile;
+    pollForNewTurns();
 }
 
 function chooseCell(){
@@ -137,11 +148,28 @@ function chooseCell(){
   $.ajax({
     type: 'PUT',
     url: '/api/game/'+game_id,
-    data: JSON.stringify({action:action}),
+    data: JSON.stringify({action:action, player_id: this_player.id}),
     success: function(res){
       console.log(res);
       $('.cell_choosable').removeClass('cell_choosable');
       showMessage('your action: '+action,'info');
+    }
+  });
+}
+
+function pollForNewTurns(){
+  $.ajax({
+    type: 'GET',
+    url: '/api/game/'+game_id,
+    success: function(res){
+      console.log(res.instance.turn )
+      if(res.instance.turn > lastInstanceTurn) {
+        lastInstanceTurn = res.instance.turn;
+        handleRefresh(res);
+      }
+    },
+    complete: function(){
+      window.setTimeout(pollForNewTurns, 1000);
     }
   });
 }
