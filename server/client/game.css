@@ -34,10 +34,11 @@
   text-align: center;
   position: relative;
   background-size: 100% 100%;
+  background-image: url(./objects/grass_round_tile.png);
 
-  /* tmp until art */
+  /* tmp until art 
   border: solid thin gray;
-  background-color: #999999;
+  background-color: #999999;*/
 }
 
 .map_row {
@@ -87,9 +88,9 @@
 }
 
 #player_2_inventory {
-  background-color: #009900;
+  background-color: #999900;
 }
 
 #player_3_inventory {
-  background-color: #999900;
+  background-color: #009900;
 }
