@@ -10,7 +10,7 @@ var interactsWith = [];
 interactsWith[7] = 8; // Key with door
 interactsWith[11] = 10; // Bucket with water
 interactsWith[12] = 9; //extinguisher with fire
-
+var audioMuted = store('audio')||false;
 var audio = {
   walkingSound: new Audio("audio/footstepsDirt.wav"),
   backgroundMusic: new Audio("audio/music.mp3")
@@ -62,7 +62,7 @@ function drawMapEntities(response){
 
 function drawPlayers(players){
   if(lastInstanceTurn >=0){
-    audio.walkingSound.play();
+    if (!audioMuted) audio.walkingSound.play();
   }
   for(var i=0; i<players.length; i++){
     $("#map_cell_" + players[i].h + "_" + players[i].v).append('<img src="objects/' + players[i].sprite + '.png" class="map_object player_icon"/>');
@@ -300,11 +300,14 @@ $(document).ready(function(){
   $(document).on('click', '#action_interact', actionInteractClick);
   $(document).on('click', '.cell_choosable', chooseCell);
 
-  audio.backgroundMusic.addEventListener('ended', function() {
+  $('#audio').click(toggleAudio).removeClass('on mute').addClass(audioMuted?'mute':'on');
+  if (!audioMuted) {
+    audio.backgroundMusic.addEventListener('ended', function() {
       this.currentTime = 0;
-      this.play();
-  }, false);
-  audio.backgroundMusic.play();
+      if (!audioMuted) this.play();
+    }, false);
+    audio.backgroundMusic.play();
+  }
 });
 
 function bindUnload() {
@@ -331,4 +334,60 @@ function leaveGame(data) {
       console.log(res);
     }
   });
+}
+
+function toggleAudio() {
+  audioMuted = !audioMuted;
+  store('audio', audioMuted);
+  $('#audio').removeClass('on mute').addClass(audioMuted?'mute':'on');
+  if (audioMuted) {
+    audio.backgroundMusic.pause();
+    audio.walkingSound.pause();
+  } else {
+    audio.backgroundMusic.addEventListener('ended', function() {
+      this.currentTime = 0;
+      if (!audioMuted) this.play();
+    }, false);
+    audio.backgroundMusic.play();
+  }
+}
+
+function setCookieNoExp(name, value)
+{
+  var cookieExp = new Date();     //set 8/06/2012 date object
+  cookieExp.setTime(cookieExp.getTime() + (1000 * 60 * 60 * 24 * 365 * 5));  //5 years
+  document.cookie = name + "=" + escape(value) + "; path=/; expires=" + cookieExp.toGMTString();
+}
+function getCookie(cookieName)
+{
+  var theCookie=""+document.cookie;
+  var ind=theCookie.indexOf(cookieName+"=");
+  if (ind==-1 || cookieName=="") return "";
+  var ind1=theCookie.indexOf(";",ind);
+  if (ind1==-1) ind1=theCookie.length;
+  return unescape(theCookie.substring(ind+cookieName.length+1,ind1));
+}
+function isJSON(test){
+  if ("string" !== typeof test) return false;
+  return /^[\],:{}\s]*$/.test(test.replace(/\\["\\\/bfnrtu]/g, '@').
+    replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
+    replace(/(?:^|:|,)(?:\s*\[)+/g, ''));
+}
+function store(key,item) {
+  var text;
+  if ((function(){var mod='testHasLocalStorage';try{window.localStorage.setItem(mod,mod);window.localStorage.removeItem(mod);return true;}catch(e){return false;}})() === true){
+    if ("undefined" === typeof item) {
+      text = window.localStorage.getItem(key);
+      return (isJSON(text) ? JSON.parse(text) : text);
+    } else {
+      return window.localStorage.setItem(key,isJSON(item) ? JSON.stringify(item) : item);
+    }
+  } else {
+    if ("undefined" === typeof item) {
+      text = getCookie(key);
+      return (isJSON(text) ? JSON.parse(text) : text);
+    } else {
+      return setCookieNoExp(key,isJSON(item) ? JSON.stringify(item) : item);
+    }
+  }
 }
