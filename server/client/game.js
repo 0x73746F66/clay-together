@@ -85,7 +85,12 @@ function drawPlayers(players){
     if (!audioMuted) audio.walkingSound.play();
   }
   for(var i=0; i<players.length; i++){
-    $("#map_cell_" + players[i].h + "_" + players[i].v).append('<img src="objects/' + players[i].sprite + '.png" class="map_object player_icon"/>');
+    if(i == this_player.id){
+      $("#map_cell_" + players[i].h + "_" + players[i].v).append('<img src="objects/' + players[i].sprite + '.png" class="map_object player_icon this_player"/>');
+    }
+    else{
+      $("#map_cell_" + players[i].h + "_" + players[i].v).append('<img src="objects/' + players[i].sprite + '.png" class="map_object player_icon"/>');
+    }
   }
 }
 

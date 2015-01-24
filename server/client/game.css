@@ -190,3 +190,62 @@ img.player_icon {
 #player_3_inventory {
   background-image: url('./ui/box_green.png');
 }
+
+
+.this_player {
+  animation-duration: 4s;
+  animation-name: pulse;
+  animation-iteration-count: infinite;
+}
+
+@keyframes pulse {
+  0% {
+    filter: brightness(1);
+  }
+
+  5% {
+    filter: brightness(1.5);
+  }
+
+  10% {
+    filter: brightness(1);
+  }
+
+  15% {
+    filter: brightness(1.5);
+  }
+
+  20% {
+    filter: brightness(1);
+  }
+
+  100% {
+    filter: brightness(0.8);
+  }
+}
+
+@webkit pulse {
+  0% {
+    -webkit-filter: brightness(1);
+  }
+
+  5% {
+    -webkit-filter: brightness(1.5);
+  }
+
+  10% {
+    -webkit-filter: brightness(1);
+  }
+
+  15% {
+    -webkit-filter: brightness(1.5);
+  }
+
+  20% {
+    -webkit-filter: brightness(1);
+  }
+
+  100% {
+    -webkit-filter: brightness(0.8);
+  }
+}
