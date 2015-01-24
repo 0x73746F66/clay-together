@@ -10,6 +10,10 @@ interactsWith[7] = 8; // Key with door
 interactsWith[11] = 10; // Bucket with water
 interactsWith[12] = 9; //extinguisher with fire
 
+var audio = {
+  walkingSound: new Audio("audio/footstepsDirt.wav")
+}
+
 $.ajaxSetup({
    contentType: "application/json",
    dataType: "json"
@@ -48,13 +52,16 @@ function drawMapEntities(response){
   for(var v=0; v<map_cells_v; v++){
     for(var h=0; h<map_cells_h; h++){
       if(response.map[v][h] != response.dataset.empty){
-        $("#map_cell_" + h + "_" + v).append('<img src="objects/' + response.map[v][h] + '.png" class="map_object"/>');
+        $("#map_cell_" + h + "_" + v).append('<img src="objects/' + response.map[v][h] + '.png" class="map_object wobble"/>');
       }
     }
   }
 }
 
 function drawPlayers(players){
+  if(lastInstanceTurn >=0){
+    audio.walkingSound.play();
+  }
   for(var i=0; i<players.length; i++){
     $("#map_cell_" + players[i].h + "_" + players[i].v).append('<img src="objects/' + players[i].sprite + '.png" class="map_object player_icon"/>');
   }
@@ -94,6 +101,7 @@ function actionInteractClick(){
 }
 
 function actionMoveClick(){
+  console.log("playing");
   getNeighboringEmptyCells(this_player.h, this_player.v).addClass('cell_choosable');
   action = 'move';
 }
@@ -217,6 +225,7 @@ function reloadGameCreate(res) {
   $('#action_skip').attr('disabled', 'disabled');
   $('#action_drop').attr('disabled', 'disabled');
   $('#action_interact').attr('disabled', 'disabled');
+
   game_id = null;
   this_player = null;
   action;
