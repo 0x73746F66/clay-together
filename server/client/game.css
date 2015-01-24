@@ -27,6 +27,11 @@
   filter: brightness(1.5);
 }
 
+img.map_object {
+  width:40;
+  height:40;
+}
+
 .map_cell {
   width:40;
   height:40;
