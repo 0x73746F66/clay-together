@@ -11,6 +11,15 @@ var this_player = null;
 
 var action;
 
+function showMessage(text, type) {
+  if ('undefined' === typeof type) type = 'error';
+  $('#message').removeClass('info success warn error').addClass(type).text(text);
+}
+
+function hideMessage() {
+  $('#message').removeClass('info success warn error').empty();
+}
+
 function drawMapGrid(width, height){
   var mapHtml = "";
   for(var v=0; v<height; v++){
@@ -79,6 +88,7 @@ function drawInventoryForPlayer(player, items){
 }
 
 function handleRefresh(data){
+  hideMessage();
   game_id = data.instance.id;
   this_player = data.players[data.profile];
   clearMap();
@@ -91,8 +101,8 @@ function handleRefresh(data){
 function createGame(){
   game_id = $('#secret').val();
   $.get('/api/start/'+game_id, function(res){
-    if (res.result) {
-      $('body').prepend("<h1>"+res.error+"</h1>");
+    if (!res.result && res.error) {
+      showMessage(res.error);
       return;
     }
     if (!res.instance || res.instance.id != game_id){
@@ -108,6 +118,7 @@ function createGame(){
           handleRefresh(res);
           $('#createGame').hide();
           $('#game').fadeIn();
+          showMessage('New game started','success');
           return;
         }
       });
@@ -116,6 +127,7 @@ function createGame(){
     handleRefresh(res);
     $('#createGame').hide();
     $('#game').fadeIn();
+    showMessage('Welcome player '+(++res.profile),'info');
   });
 }
 
@@ -129,6 +141,7 @@ function chooseCell(){
     success: function(res){
       console.log(res);
       $('.cell_choosable').removeClass('cell_choosable');
+      showMessage('your action: '+action,'info');
     }
   });
 }
