@@ -1,3 +1,7 @@
+body {
+  background: url(./ui/background.jpg) repeat;
+}
+
 #game {
   width:800;
   position: fixed;
