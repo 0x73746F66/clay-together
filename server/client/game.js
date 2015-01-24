@@ -68,6 +68,22 @@ function getNeighboringEmptyCells(h, v){
     '#map_cell_' + h + "_" + (v+1) + ':empty');
 }
 
+function getNeighboringObjectsCells(h, v){
+  return $('#map_cell_' + (h-1) + "_" + v + ' ,' +
+    '#map_cell_' + (h+1) + "_" + v + ' ,' +
+    '#map_cell_' + h + "_" + (v-1) + ' ,' +
+    '#map_cell_' + h + "_" + (v+1) + ' ');
+}
+
+
+function actionInteractClick(){
+  var cells = getNeighboringObjectsCells(this_player.h, this_player.v).addClass('cell_choosable');
+  /*cells.each(function(){
+    object = this.src;
+  });*/
+  action = 'interact';
+}
+
 function actionMoveClick(){
   getNeighboringEmptyCells(this_player.h, this_player.v).addClass('cell_choosable');
   action = 'move';
@@ -228,6 +244,7 @@ $(document).ready(function(){
   $(document).on('click', '#action_move', actionMoveClick);
   $(document).on('click', '#action_drop', actionDropClick);
   $(document).on('click', '#action_skip', actionSkipClick);
+  $(document).on('click', '#action_interact', actionInteractClick);
   $(document).on('click', '.cell_choosable', chooseCell);
 });
 
