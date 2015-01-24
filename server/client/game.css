@@ -41,7 +41,7 @@ body {
   height:50;
 }
 
-.map_cell {
+.map_cell:not(.bridge) {
   width:50;
   height:50;
   float:left;
@@ -50,10 +50,17 @@ body {
   position: relative;
   background-size: 100% 100%;
   background-image: url(./objects/grass_round_tile.png);
+}
 
-  /* tmp until art
-  border: solid thin gray;
-  background-color: #999999;*/
+.map_cell.bridge {
+  width:50;
+  height:50;
+  float:left;
+  margin: 1px;
+  text-align: center;
+  position: relative;
+  background-size: 100% 100%;
+  background-image: url('./ui/bridge.png');
 }
 
 .map_row {

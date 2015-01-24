@@ -9,11 +9,14 @@ var dataset = {};
 var interactsWith = [];
 interactsWith[7] = 8; // Key with door
 interactsWith[11] = 10; // Bucket with water
+interactsWith[16] = 10; // Planks with water
+interactsWith[15] = 15; // wood with wood to make planks
 interactsWith[12] = 9; //extinguisher with fire
 var audioMuted = store('audio')||false;
 var audio = {
   splash: new Audio("audio/splash.wav"),
   drop: new Audio("audio/drop.wav"),
+  build: new Audio("audio/construction.wav"),
   backpack: new Audio("audio/backpack.wav"),
   walkingSound: new Audio("audio/footstepsDirt.wav"),
   backgroundMusic: new Audio("audio/music.mp3")
@@ -58,6 +61,8 @@ function drawMapEntities(response){
     for(var h=0; h<map_cells_h; h++){
       if(response.map[v][h] != response.dataset.empty){
         $("#map_cell_" + h + "_" + v).append('<img src="objects/' + response.map[v][h] + '.png" class="map_object"/>');
+      } else if (response.bridges.indexOf(h+'_'+v) !== -1) {
+        $("#map_cell_" + h + "_" + v).addClass('bridge');
       }
     }
   }
@@ -217,6 +222,7 @@ function submitAction(){
     success: function(res){
       $('.cell_choosable').removeClass('cell_choosable');
       showMessage('your action: '+action,'info');
+      //@TODO ghost this action
       if (!audioMuted) playSound(action);
     }
   });
@@ -230,8 +236,11 @@ function playSound(action){
     if($('#map_cell_'+actionParsed[2]+'_'+actionParsed[3]).find('[src*="'+dataset.full_chest+'.png"]').length === 1){
       audio.backpack.play();
     }
-    if($('#map_cell_'+actionParsed[2]+'_'+actionParsed[3]).find('[src*="'+dataset.water+'.png"]').length === 1){
+    if(this_player.inventory === dataset.bucket && $('#map_cell_'+actionParsed[2]+'_'+actionParsed[3]).find('[src*="'+dataset.water+'.png"]').length === 1){
       audio.splash.play();
+    }
+    if(this_player.inventory === dataset.planks && $('#map_cell_'+actionParsed[2]+'_'+actionParsed[3]).find('[src*="'+dataset.water+'.png"]').length === 1){
+      audio.build.play();
     }
   }
 }

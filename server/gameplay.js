@@ -1,6 +1,6 @@
 var maps = require('./maps.js');
 var dataset = {
-      collectables: [7,11,12,14],
+      collectables: [7,11,12,14,15,16],
       empty: 0,
       player_red: 1,
       player_blue: 2,
@@ -15,7 +15,9 @@ var dataset = {
       bucket: 11,
       extinguisher: 12,
       empty_chest: 13,
-      boulder: 14
+      boulder: 14,
+      wood: 15,
+      planks: 16
   };
 
 var PLAYER_COUNT = 4;
@@ -51,14 +53,31 @@ function nextTurn(gamestate){
           gamestate.players[i].inventory = chest_content;
           console.log("Opened chest");
         }
-        else if(current_inventory == dataset.bucket  && map[actionParsed[3]][actionParsed[2]] == dataset.water){
+        else if(current_inventory == dataset.bucket && map[actionParsed[3]][actionParsed[2]] == dataset.water){
           gamestate.players[i].inventory = dataset.extinguisher;
           console.log("Collected water");
         }
-        else if(current_inventory == dataset.extinguisher  && map[actionParsed[3]][actionParsed[2]] == dataset.fire){
+        else if(current_inventory == dataset.extinguisher && map[actionParsed[3]][actionParsed[2]] == dataset.fire){
           gamestate.players[i].inventory = 0;
           map[actionParsed[3]][actionParsed[2]] = 0;
           console.log("Put out fire");
+        }
+        else if(current_inventory == dataset.planks && map[actionParsed[3]][actionParsed[2]] == dataset.water){
+          gamestate.players[i].inventory = 0;
+          map[actionParsed[3]][actionParsed[2]] = 0;
+          gamestate.bridges.push(actionParsed[2]+'_'+actionParsed[3]);
+          console.log("built bridge");
+        }
+        else if(current_inventory == dataset.key && map[actionParsed[3]][actionParsed[2]] == dataset.door){
+          gamestate.players[i].inventory = 0;
+          map[actionParsed[3]][actionParsed[2]] = 0;
+          gamestate.complete = true;
+          console.log("puzzle complete");
+        }
+        else if(current_inventory == dataset.wood && map[actionParsed[3]][actionParsed[2]] == dataset.wood){
+          gamestate.players[i].inventory = dataset.planks;
+          map[actionParsed[3]][actionParsed[2]] = 0;
+          console.log("made planks");
         }
         else if (current_inventory == dataset.empty && dataset.collectables.indexOf(map[actionParsed[3]][actionParsed[2]]) !== -1){
           gamestate.players[i].inventory = map[actionParsed[3]][actionParsed[2]];
