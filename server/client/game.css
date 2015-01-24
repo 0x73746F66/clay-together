@@ -34,10 +34,11 @@
   text-align: center;
   position: relative;
   background-size: 100% 100%;
+  background-image: url(./objects/grass_round_tile.png);
 
-  /* tmp until art */
+  /* tmp until art 
   border: solid thin gray;
-  background-color: #999999;
+  background-color: #999999;*/
 }
 
 .map_row {
