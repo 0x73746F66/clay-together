@@ -119,6 +119,7 @@ function createGame(){
           $('#createGame').hide();
           $('#game').fadeIn();
           showMessage('New game started','success');
+          bindUnload();
           return;
         }
       });
@@ -128,6 +129,7 @@ function createGame(){
     $('#createGame').hide();
     $('#game').fadeIn();
     showMessage('Welcome player '+(++res.profile),'info');
+    bindUnload();
   });
 }
 
@@ -153,3 +155,28 @@ $(document).ready(function(){
   $(document).on('click', '#action_drop', actionMoveDrop);
   $(document).on('click', '.cell_choosable', chooseCell);
 });
+
+function bindUnload() {
+  $(window).bind('beforeunload', function(){
+    if(/Firefox[\/\s](\d+)/.test(navigator.userAgent) && new Number(RegExp.$1) >= 4) {
+       var data={async:false};
+       leaveGame(data);
+      return;//'Do you really want to abandon the game?';
+    } else {
+      var data={async:true};
+      leaveGame(data);
+      return;//'Do you really want to abandon the game?';
+    }
+  });
+}
+
+function leaveGame(data) {
+  $.ajax({
+    type: 'PUT',
+    url: '/api/leave/'+game_id,
+    data: JSON.stringify({profile:this_player}),
+    success: function(res){
+      console.log(res);
+    }
+  });
+}

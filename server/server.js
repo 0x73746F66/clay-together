@@ -49,21 +49,26 @@ router.route('/start/:game_id')
 
 router.route('/game/:game_id')
   .get(function(req, res) {
-    var game = MemoryStore[req.params.game_id];
+    var game = MemoryStore[req.params.game_id]||{result:false, message:'Game abandoned.'};
     res.json(game);
   })
   .put(function(req, res) {
      console.log(req.params.game_id);
-     
+
     var game = MemoryStore[req.params.game_id];
     console.log(game);
     gameplay.submitAction(game, req.body.player_id, req.body.action);
     // modify game
     res.json(game);
-  })
-  .delete(function(req, res) {
-    delete req.session[req.body.game_id]
-    res.json({ message: req.body.game_id+' deleted' });
+  });
+
+router.route('/leave/:game_id')
+  .put(function(req, res) {
+    delete MemoryStore[req.params.game_id];
+    MemoryStore.length = --MemoryStore.length;
+    console.log('player ' + req.body.profile.sprite + ' left ' + req.params.game_id);
+
+    res.json({result:true, message:'Expect to be shuned dc\'er!'});
   });
 
 // REGISTER OUR ROUTES -------------------------------
