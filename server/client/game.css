@@ -23,7 +23,8 @@
 }
 
 .map_cell.cell_choosable {
-  border: solid thin red;
+  -webkit-filter: brightness(1.5);
+  filter: brightness(1.5);
 }
 
 .map_cell {
