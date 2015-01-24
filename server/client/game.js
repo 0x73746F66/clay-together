@@ -10,8 +10,8 @@ var map_cells_v = 6;
 var this_player = null;
 
 var action;
+var lastInstanceTurn = -1;
 
-<<<<<<< HEAD
 function showMessage(text, type) {
   if ('undefined' === typeof type) type = 'error';
   $('#message').removeClass('info success warn error').addClass(type).text(text);
@@ -20,9 +20,6 @@ function showMessage(text, type) {
 function hideMessage() {
   $('#message').removeClass('info success warn error').empty();
 }
-=======
-var lastInstanceTurn = -1;
->>>>>>> Polling for updates
 
 function drawMapGrid(width, height){
   var mapHtml = "";
