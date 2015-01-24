@@ -90,6 +90,10 @@ function handleRefresh(data){
 function createGame(){
   var secret = $('#secret').val();
   $.get('/api/start/'+secret, function(res){
+    if (res.result) {
+      $('body').prepend("<h1>"+res.error+"</h1>");
+      return;
+    }
     if (!res.instance || res.instance.id != secret){
       $.ajax({
         type: 'POST',
@@ -130,7 +134,7 @@ function chooseCell(){
 
 $(document).ready(function(){
   drawMapGrid(map_cells_h,map_cells_v);
-  $(document).on('click', '#start', createGame)
+  $(document).on('click', '#start', createGame);
   $(document).on('click', '#action_move', actionMoveClick);
   $(document).on('click', '#action_drop', actionMoveDrop);
   $(document).on('click', '.cell_choosable', chooseCell);
