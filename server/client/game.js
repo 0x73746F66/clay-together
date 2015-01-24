@@ -5,6 +5,11 @@ var map_cells_v = 6;
 var action;
 var lastInstanceTurn = -1;
 
+var interactsWith = [];
+interactsWith[7] = 8; // Key with door
+interactsWith[11] = 10; // Bucket with water
+interactsWith[12] = 9; //extinguisher with fire
+
 $.ajaxSetup({
    contentType: "application/json",
    dataType: "json"
@@ -68,19 +73,23 @@ function getNeighboringEmptyCells(h, v){
     '#map_cell_' + h + "_" + (v+1) + ':empty');
 }
 
-function getNeighboringObjectsCells(h, v){
-  return $('#map_cell_' + (h-1) + "_" + v + ' ,' +
+function getNeighboringInteractableCells(h, v, inventory){
+  var neighboringObjects =  $('#map_cell_' + (h-1) + "_" + v + ' ,' +
     '#map_cell_' + (h+1) + "_" + v + ' ,' +
     '#map_cell_' + h + "_" + (v-1) + ' ,' +
-    '#map_cell_' + h + "_" + (v+1) + ' ');
+    '#map_cell_' + h + "_" + (v+1) + ' ')
+
+  if(inventory != 0){
+    return neighboringObjects.filter(':has( > img[src="objects/' + interactsWith[inventory] + '.png"])');
+  }
+  else {
+    return neighboringObjects.filter(':has(> img[src="objects/5.png"])');
+  }
 }
 
 
 function actionInteractClick(){
-  var cells = getNeighboringObjectsCells(this_player.h, this_player.v).addClass('cell_choosable');
-  /*cells.each(function(){
-    object = this.src;
-  });*/
+  getNeighboringInteractableCells(this_player.h, this_player.v, this_player.inventory).addClass('cell_choosable');
   action = 'interact';
 }
 
@@ -117,6 +126,17 @@ function handleRefresh(data){
   clearInventory();
   drawInventory(data.players);
   drawPlayers(data.players);
+
+  enableDisableInteractAction(data);
+}
+
+function enableDisableInteractAction(data){
+  if (lastInstanceTurn != -1 && getNeighboringInteractableCells(data.players[this_player.id].h, data.players[this_player.id].v, data.players[this_player.id].inventory).size() > 0){
+    $('#action_interact').attr('disabled',false);
+  }
+  else{
+    $('#action_interact').attr('disabled','disabled');
+  }
 }
 
 function createGame(){
@@ -179,6 +199,7 @@ function initializeOnce(data){
   $('#action_move').attr('disabled', 'disabled');
   $('#action_skip').attr('disabled', 'disabled');
   $('#action_drop').attr('disabled', 'disabled');
+  $('#action_interact').attr('disabled', 'disabled');
 }
 
 function chooseCell(){
@@ -195,6 +216,7 @@ function reloadGameCreate(res) {
   $('#action_move').attr('disabled', 'disabled');
   $('#action_skip').attr('disabled', 'disabled');
   $('#action_drop').attr('disabled', 'disabled');
+  $('#action_interact').attr('disabled', 'disabled');
   game_id = null;
   this_player = null;
   action;
@@ -212,7 +234,7 @@ function pollForNewTurns(){
         return;
       }
       if (lastInstanceTurn === -1 && res.profile !== 3) return;
-      if (lastInstanceTurn === -1 && res.profile === 3) {
+      if (lastInstanceTurn === -1 && res.profile >= 3) {
         $('.player_icon').fadeIn('slow');
         $('#action_move').attr('disabled', false);
         $('#action_skip').attr('disabled', false);
@@ -220,6 +242,7 @@ function pollForNewTurns(){
           $('#action_drop').attr('disabled',false);
         showMessage('Started', 'info');
         lastInstanceTurn = 0;
+        enableDisableInteractAction(res);
       }
       if(res.instance && res.instance.turn > lastInstanceTurn) {
         lastInstanceTurn = res.instance.turn;
