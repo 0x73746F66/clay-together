@@ -11,7 +11,8 @@ interactsWith[11] = 10; // Bucket with water
 interactsWith[12] = 9; //extinguisher with fire
 
 var audio = {
-  walkingSound: new Audio("audio/footstepsDirt.wav")
+  walkingSound: new Audio("audio/footstepsDirt.wav"),
+  backgroundMusic: new Audio("audio/music.mp3")
 }
 
 $.ajaxSetup({
@@ -278,6 +279,12 @@ $(document).ready(function(){
   $(document).on('click', '#action_skip', actionSkipClick);
   $(document).on('click', '#action_interact', actionInteractClick);
   $(document).on('click', '.cell_choosable', chooseCell);
+
+  audio.backgroundMusic.addEventListener('ended', function() {
+      this.currentTime = 0;
+      this.play();
+  }, false);
+  audio.backgroundMusic.play();
 });
 
 function bindUnload() {
