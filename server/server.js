@@ -55,7 +55,6 @@ router.route('/game/:game_id')
   .put(function(req, res) {
     var game = MemoryStore[req.params.game_id];
     gameplay.submitAction(game, req.body.player_id, req.body.action);
-    console.log(game);
     // modify game
     res.json(game);
   });
