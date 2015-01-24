@@ -61,6 +61,15 @@ function drawMapEntities(response){
     for(var h=0; h<map_cells_h; h++){
       if(response.map[v][h] != response.dataset.empty){
         $("#map_cell_" + h + "_" + v).append('<img src="objects/' + response.map[v][h] + '.png" class="map_object"/>');
+        if(!!response.dataset.animated[response.map[v][h]]){
+          $("#map_cell_" + h + "_" + v + " > img").hide();
+          var animation_properties = response.dataset.animated[response.map[v][h]];
+          var anim = $(
+            '<div class="map_object" style="background-image:url(objects/'+response.map[v][h] + '.png); ' +
+            ' background-size: '+ animation_properties.no_of_frames +'00% 100%;">').sprite(
+            animation_properties);
+          $("#map_cell_" + h + "_" + v).append(anim);
+        }
       } else if (response.bridges.indexOf(h+'_'+v) !== -1) {
         $("#map_cell_" + h + "_" + v).addClass('bridge');
       }

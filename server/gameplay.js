@@ -1,6 +1,9 @@
 var maps = require('./maps.js');
 var dataset = {
       collectables: [7,11,12,14,15,16],
+      animated: {
+      	"9": {fps: 4, no_of_frames: 2}
+      },
       empty: 0,
       player_red: 1,
       player_blue: 2,
