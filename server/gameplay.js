@@ -12,7 +12,8 @@ var dataset = {
       fire: 9,
       water: 10,
       bucket: 11,
-      extinguisher: 12
+      extinguisher: 12,
+      empty_chest: 13
   };
 
 var PLAYER_COUNT = 4;
@@ -22,71 +23,82 @@ function nextTurn(gamestate){
   var actions = gamestate.pendingActions;
   var movePairs = [];
 
-	for(var i=0; i<PLAYER_COUNT; i++){
-		console.log('processing player ' + i);
-		var current_hv = gamestate.players[i].h + '_' + gamestate.players[i].v;
-		movePairs[i] = [ current_hv, current_hv ];
+  for(var i=0; i<PLAYER_COUNT; i++){
+    console.log('processing player ' + i);
+    var current_hv = gamestate.players[i].h + '_' + gamestate.players[i].v;
+    var current_inventory = gamestate.players[i].inventory;
+    movePairs[i] = [ current_hv, current_hv ];
 
-		if(actions[i]){
-			var actionParsed = /([^_1-9]+)_?(\d+)?_?(\d+)?/.exec(actions[i]);
+    if(actions[i]){
+      var actionParsed = /([^_1-9]+)_?(\d+)?_?(\d+)?/.exec(actions[i]);
 
-			if('move' == actionParsed[1] && map[actionParsed[3]][actionParsed[2]] == dataset.empty){
-				var next_hv = actionParsed[2] + '_' + actionParsed[3];
-				movePairs[i] = [ current_hv, next_hv ];
-			}
+      if('move' == actionParsed[1] && map[actionParsed[3]][actionParsed[2]] == dataset.empty){
+        var next_hv = actionParsed[2] + '_' + actionParsed[3];
+        movePairs[i] = [ current_hv, next_hv ];
+      }
 
-			if('drop' == actionParsed[1]  && map[actionParsed[3]][actionParsed[2]] == dataset.empty){
-				map[actionParsed[3]][actionParsed[2]] = gamestate.players[i].inventory;
-				gamestate.players[i].inventory = 0;
-			}
-		}
-	}
+      if('drop' == actionParsed[1]  && map[actionParsed[3]][actionParsed[2]] == dataset.empty){
+        map[actionParsed[3]][actionParsed[2]] = gamestate.players[i].inventory;
+        gamestate.players[i].inventory = 0;
+      }
 
-	var bestMoveResolution = moveResolver(movePairs);
-	for(var i=0; i<PLAYER_COUNT; i++){
-		var newLocation = movePairs[i][bestMoveResolution[i]];
-		gamestate.players[i].h = parseInt(newLocation.split('_')[0]);
-		gamestate.players[i].v = parseInt(newLocation.split('_')[1]);
-	}
+      if('interact' == actionParsed[1]  && map[actionParsed[3]][actionParsed[2]] == dataset.full_chest){
+        var chest_content = gamestate.chests[actionParsed[3]+'_'+actionParsed[2]];
+        map[actionParsed[3]][actionParsed[2]] = dataset.empty_chest;
+        gamestate.players[i].inventory = chest_content;
+      } else if ('interact' == actionParsed[1]  && current_inventory !== dataset.empty) {
+        console.log('player has an item to use on map[actionParsed[3]][actionParsed[2]]');
+      } else if('interact' == actionParsed[1]  && current_inventory == dataset.empty && map[actionParsed[3]][actionParsed[2]] !== dataset.empty) {
+        console.log('make sure we can add this item to our inventory');
+      }
+    }
+  }
 
-	gamestate.pendingActions = {};
-	gamestate.instance.turn++;
+  var bestMoveResolution = moveResolver(movePairs);
+  for(var i=0; i<PLAYER_COUNT; i++){
+    var newLocation = movePairs[i][bestMoveResolution[i]];
+    gamestate.players[i].h = parseInt(newLocation.split('_')[0]);
+    gamestate.players[i].v = parseInt(newLocation.split('_')[1]);
+  }
+
+  gamestate.pendingActions = {};
+  gamestate.instance.turn++;
 }
 
 
 function moveResolver(pairs){
-	var combinations = 1 << (pairs.length+1) - 1;
-	var bestScore = 0;
-	var bestProposal;
-	for(var i=0; i < combinations; i++){
-		var result = resolve ([i&1, i>>1&1, i>>2&1, i>>3&1], pairs);
-		if(result != null && (result.score > bestScore)){
-			bestScore = result.score;
-			bestProposal = result.proposal;
-		}
-	}
-	return bestProposal
+  var combinations = 1 << (pairs.length+1) - 1;
+  var bestScore = 0;
+  var bestProposal;
+  for(var i=0; i < combinations; i++){
+    var result = resolve ([i&1, i>>1&1, i>>2&1, i>>3&1], pairs);
+    if(result != null && (result.score > bestScore)){
+      bestScore = result.score;
+      bestProposal = result.proposal;
+    }
+  }
+  return bestProposal
 };
 
 function resolve(proposal, pairs){
-	var alreadyOccupied = {};
-	var score = 0;
-	for(var i=0; i<proposal.length; i++){
-		if(proposal[i] == 0 && !alreadyOccupied[pairs[i][0]]){
-			alreadyOccupied[pairs[i][0]] = true;
-		}
-		else if (proposal[i] == 1 && !alreadyOccupied[pairs[i][1]]){
-			alreadyOccupied[pairs[i][1]] = true;
-			score++;
-		}
-		else{
-			return null;
-		}
-	}
-	return {
-		score: score,
-		proposal: proposal
-	}
+  var alreadyOccupied = {};
+  var score = 0;
+  for(var i=0; i<proposal.length; i++){
+    if(proposal[i] == 0 && !alreadyOccupied[pairs[i][0]]){
+      alreadyOccupied[pairs[i][0]] = true;
+    }
+    else if (proposal[i] == 1 && !alreadyOccupied[pairs[i][1]]){
+      alreadyOccupied[pairs[i][1]] = true;
+      score++;
+    }
+    else{
+      return null;
+    }
+  }
+  return {
+    score: score,
+    proposal: proposal
+  }
 }
 
 
