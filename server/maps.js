@@ -30,14 +30,14 @@ var levels = {
         },
         {
           sprite: '3',
-          h: 4,
+          h: 7,
           v: 4,
-          inventory: 0
+          inventory: 11
         },
         {
           sprite: '4',
-          h: 5,
-          v: 5,
+          h: 9,
+          v: 0,
           inventory: 12
         }
       ]

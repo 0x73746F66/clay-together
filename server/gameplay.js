@@ -47,20 +47,22 @@ function nextTurn(gamestate){
 		    var chest_content = gamestate.chests[actionParsed[3]+'_'+actionParsed[2]];
 	        map[actionParsed[3]][actionParsed[2]] = dataset.empty_chest;
 	        gamestate.players[i].inventory = chest_content;
+	        console.log("Opened chest");
+      	}
+      	else if(current_inventory == dataset.bucket  && map[actionParsed[3]][actionParsed[2]] == dataset.water){
+      		gamestate.players[i].inventory = dataset.extinguisher;
+	        console.log("Collected water");
+      	}
+      	else if(current_inventory == dataset.extinguisher  && map[actionParsed[3]][actionParsed[2]] == dataset.fire){
+      		gamestate.players[i].inventory = 0;
+      		map[actionParsed[3]][actionParsed[2]] = 0;
+	        console.log("Put out fire");
       	}
       	else if (current_inventory == dataset.empty && map[actionParsed[3]][actionParsed[2]] !== dataset.empty){
        		console.log('make sure we can add this item to our inventory');
       	}
-      	else if(current_inventory == dataset.bucket  && map[actionParsed[3]][actionParsed[2]] !== dataset.water){
-      		current_inventory = dataset.extinguisher;
-      	}
-      	else if(current_inventory == dataset.extinguisher  && map[actionParsed[3]][actionParsed[2]] !== dataset.fire){
-      		current_inventory = 0;
-      		map[actionParsed[3]][actionParsed[2]] = 0;
-      	}
-      	else if(current_inventory == dataset.extinguisher  && map[actionParsed[3]][actionParsed[2]] !== dataset.fire){
-      		current_inventory = 0;
-      		map[actionParsed[3]][actionParsed[2]] = 0;
+      	else {
+	        console.log("Don't know what to do with this");
       	}
       }
     }
