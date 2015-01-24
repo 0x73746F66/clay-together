@@ -1,5 +1,5 @@
 #game {
-  width:600;
+  width:800;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -33,13 +33,13 @@
 }
 
 img.map_object {
-  width:40;
-  height:40;
+  width:50;
+  height:50;
 }
 
 .map_cell {
-  width:40;
-  height:40;
+  width:50;
+  height:50;
   float:left;
   margin: 1px;
   text-align: center;
@@ -91,8 +91,8 @@ img.map_object {
 }
 
 .player_inventory {
-  width:50px;
-  height:50px;
+  width:60px;
+  height:60px;
   float: left;
   margin: 12px;
   padding:10px;

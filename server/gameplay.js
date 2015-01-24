@@ -42,14 +42,26 @@ function nextTurn(gamestate){
         gamestate.players[i].inventory = 0;
       }
 
-      if('interact' == actionParsed[1]  && map[actionParsed[3]][actionParsed[2]] == dataset.full_chest){
-        var chest_content = gamestate.chests[actionParsed[3]+'_'+actionParsed[2]];
-        map[actionParsed[3]][actionParsed[2]] = dataset.empty_chest;
-        gamestate.players[i].inventory = chest_content;
-      } else if ('interact' == actionParsed[1]  && current_inventory !== dataset.empty) {
-        console.log('player has an item to use on map[actionParsed[3]][actionParsed[2]]');
-      } else if('interact' == actionParsed[1]  && current_inventory == dataset.empty && map[actionParsed[3]][actionParsed[2]] !== dataset.empty) {
-        console.log('make sure we can add this item to our inventory');
+      if('interact' == actionParsed[1]){
+      	if(dataset.full_chest == map[actionParsed[3]][actionParsed[2]]){
+		    var chest_content = gamestate.chests[actionParsed[3]+'_'+actionParsed[2]];
+	        map[actionParsed[3]][actionParsed[2]] = dataset.empty_chest;
+	        gamestate.players[i].inventory = chest_content;
+      	}
+      	else if (current_inventory == dataset.empty && map[actionParsed[3]][actionParsed[2]] !== dataset.empty){
+       		console.log('make sure we can add this item to our inventory');
+      	}
+      	else if(current_inventory == dataset.bucket  && map[actionParsed[3]][actionParsed[2]] !== dataset.water){
+      		current_inventory = dataset.extinguisher;
+      	}
+      	else if(current_inventory == dataset.extinguisher  && map[actionParsed[3]][actionParsed[2]] !== dataset.fire){
+      		current_inventory = 0;
+      		map[actionParsed[3]][actionParsed[2]] = 0;
+      	}
+      	else if(current_inventory == dataset.extinguisher  && map[actionParsed[3]][actionParsed[2]] !== dataset.fire){
+      		current_inventory = 0;
+      		map[actionParsed[3]][actionParsed[2]] = 0;
+      	}
       }
     }
   }
