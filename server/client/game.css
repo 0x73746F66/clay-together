@@ -1,5 +1,10 @@
 #game {
   width:600;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 
 #message {
@@ -23,7 +28,13 @@
 }
 
 .map_cell.cell_choosable {
-  border: solid thin red;
+  -webkit-filter: brightness(1.5);
+  filter: brightness(1.5);
+}
+
+img.map_object {
+  width:40;
+  height:40;
 }
 
 .map_cell {
@@ -45,14 +56,33 @@
   clear:both;
 }
 
+#action_move {
+  background-image: url('./ui/move_green_btn.png');
+}
+
+#action_move:active {
+  background-image: url('./ui/move_red_btn.png');
+}
+
 .action_button {
-  width: 38%;
+  width: 150px;
+  height: 88px;
   padding: 3%;
   margin: 1%;
-  border: solid thin #660000;
   display: inline-block;
   text-align: center;
   cursor: pointer;
+  background-size: 100% 100%;
+  border: none;
+  background-color: transparent;
+  /*text-indent: -9999px;
+  white-space: nowrap;
+  overflow: hidden;*/
+}
+
+.action_button:disabled {
+  filter: sepia(100%) opacity(60%);
+  cursor: default;
 }
 
 #actions_panel {
@@ -77,7 +107,7 @@
 }
 
 #players_panel {
-  clear: both;
+  float:left;
 }
 
 #player_0_inventory {
