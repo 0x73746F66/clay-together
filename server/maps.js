@@ -9,18 +9,23 @@ var levels = {
         [0,0,0,0,0,0,0,0,10,8],
         [0,0,0,0,0,0,0,0,10,0]
       ],
+      chests: {
+        "0_4": 7,
+        "1_0": 0,
+        "3_6": 11
+      },
       players: [
         {
           sprite: '1',
           h: 1,
           v: 0,
-          inventory: 12
+          inventory: 0
         },
         {
           sprite: '2',
           h: 3,
           v: 2,
-          inventory: 7
+          inventory: 0
         },
         {
           sprite: '3',
