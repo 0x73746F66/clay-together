@@ -51,14 +51,28 @@ img.map_object {
   clear:both;
 }
 
+#action_move {
+  background-image: url('./ui/move_green_btn.png');
+}
+
+#action_move:hover {
+  background-image: url('./ui/move_red_btn.png');
+}
+
 .action_button {
-  width: 38%;
+  width: 150px;
+  height: 88px;
   padding: 3%;
   margin: 1%;
-  border: solid thin #660000;
   display: inline-block;
   text-align: center;
   cursor: pointer;
+  background-size: 100% 100%;
+  border: none;
+  background-color: transparent;
+  /*text-indent: -9999px;
+  white-space: nowrap;
+  overflow: hidden;*/
 }
 
 #actions_panel {
@@ -83,7 +97,7 @@ img.map_object {
 }
 
 #players_panel {
-  clear: both;
+  float:left;
 }
 
 #player_0_inventory {
