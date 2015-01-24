@@ -52,7 +52,7 @@ function drawMapEntities(response){
   for(var v=0; v<map_cells_v; v++){
     for(var h=0; h<map_cells_h; h++){
       if(response.map[v][h] != response.dataset.empty){
-        $("#map_cell_" + h + "_" + v).append('<img src="objects/' + response.map[v][h] + '.png" class="map_object wobble"/>');
+        $("#map_cell_" + h + "_" + v).append('<img src="objects/' + response.map[v][h] + '.png" class="map_object"/>');
       }
     }
   }
