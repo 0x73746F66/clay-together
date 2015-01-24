@@ -12,6 +12,9 @@ interactsWith[11] = 10; // Bucket with water
 interactsWith[12] = 9; //extinguisher with fire
 var audioMuted = store('audio')||false;
 var audio = {
+  splash: new Audio("audio/splash.wav"),
+  drop: new Audio("audio/drop.wav"),
+  backpack: new Audio("audio/backpack.wav"),
   walkingSound: new Audio("audio/footstepsDirt.wav"),
   backgroundMusic: new Audio("audio/music.mp3")
 }
@@ -214,8 +217,23 @@ function submitAction(){
     success: function(res){
       $('.cell_choosable').removeClass('cell_choosable');
       showMessage('your action: '+action,'info');
+      if (!audioMuted) playSound(action);
     }
   });
+}
+
+function playSound(action){
+  var actionParsed = /([^_1-9]+)_?(\d+)?_?(\d+)?/.exec(action);
+  if ('drop' == actionParsed[1]) {
+    audio.drop.play();
+  } else if('interact' == actionParsed[1]) {
+    if($('#map_cell_'+actionParsed[2]+'_'+actionParsed[3]).find('[src*="'+dataset.full_chest+'.png"]').length === 1){
+      audio.backpack.play();
+    }
+    if($('#map_cell_'+actionParsed[2]+'_'+actionParsed[3]).find('[src*="'+dataset.water+'.png"]').length === 1){
+      audio.splash.play();
+    }
+  }
 }
 
 function initializeOnce(data){
