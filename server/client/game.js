@@ -83,13 +83,12 @@ function actionSkipClick(){
   submitAction();
 }
 
-function drawInventoryForPlayer(player, items){
-  var itemHtml = '';
-  for(var i=0; i<items.length; i++){
-    itemHtml += '<img src="objects/' + items[i] + '.png" class="inventory_object"/>';
+function drawInventoryForPlayer(player, item){
+  if(item != 0){
+    var itemHtml = '<img src="objects/' + item + '.png" class="inventory_object"/>';
+    $('#player_' + player + '_inventory').append(itemHtml);
+    if (player === this_player) $('#action_drop').attr('disabled',false);
   }
-  $('#player_' + player + '_inventory').append(itemHtml);
-  if (items.length > 0 && player === this_player) $('#action_drop').attr('disabled',false);
 }
 
 function handleRefresh(data){
