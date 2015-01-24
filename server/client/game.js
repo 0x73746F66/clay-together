@@ -88,6 +88,11 @@ function drawInventoryForPlayer(player, items){
 }
 
 function handleRefresh(data){
+  // Yeah, just go with it.
+  var player_id = this_player.id;
+  this_player = data.players[this_player.id];
+  this_player.id = player_id;
+
   clearMap();
   drawMapEntities(data);
   clearInventory();
