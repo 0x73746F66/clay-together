@@ -26,13 +26,13 @@ var levels = {
           sprite: '3',
           h: 4,
           v: 4,
-          inventory: 12
+          inventory: 0
         },
         {
           sprite: '4',
           h: 5,
           v: 5,
-          inventory: 0
+          inventory: 12
         }
       ]
   }
