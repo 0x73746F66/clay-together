@@ -3,7 +3,7 @@ var this_player = null;
 var map_cells_h = 10;
 var map_cells_v = 6;
 var action;
-var lastInstanceTurn = 0;
+var lastInstanceTurn = -1;
 
 $.ajaxSetup({
    contentType: "application/json",
@@ -84,6 +84,7 @@ function drawInventoryForPlayer(player, items){
     itemHtml += '<img src="objects/' + items[i] + '.png" class="inventory_object"/>';
   }
   $('#player_' + player + '_inventory').append(itemHtml);
+  if (items.length > 0 && player === this_player) $('#action_drop').attr('disabled',false);
 }
 
 function handleRefresh(data){
@@ -117,6 +118,9 @@ function createGame(){
           $('#game').fadeIn();
           showMessage('New game started','success');
           bindUnload();
+          setTimeout(function(){
+            $('.player_icon').fadeOut('slow');
+          },1000);
           return;
         }
       });
@@ -125,6 +129,7 @@ function createGame(){
     initializeOnce(res);
     handleRefresh(res);
     $('#createGame').hide();
+    $('.player_icon').hide();
     $('#game').fadeIn();
     showMessage('Welcome player '+(++res.profile),'info');
     bindUnload();
@@ -161,7 +166,7 @@ function reloadGameCreate(res) {
   game_id = null;
   this_player = null;
   action;
-  lastInstanceTurn = 0;
+  lastInstanceTurn = -1;
   clearTimeout(window.pollTurnPointer);
 }
 
@@ -173,6 +178,13 @@ function pollForNewTurns(){
       if (!res.result && res.error) {
         reloadGameCreate(res);
         return;
+      }
+      if (lastInstanceTurn === -1 && res.profile !== 3) return;
+      if (lastInstanceTurn === -1 && res.profile === 3) {
+        $('.player_icon').fadeIn('slow');
+        $('#action_move').attr('disabled', false);
+        showMessage('Started', 'info');
+        lastInstanceTurn = 0;
       }
       if(res.instance && res.instance.turn > lastInstanceTurn) {
         lastInstanceTurn = res.instance.turn;
