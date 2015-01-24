@@ -79,6 +79,7 @@ function drawInventoryForPlayer(player, items){
 }
 
 function handleRefresh(data){
+  game_id = data.instance.id;
   this_player = data.players[data.profile];
   clearMap();
   drawMapEntities(data);
@@ -88,19 +89,19 @@ function handleRefresh(data){
 }
 
 function createGame(){
-  var secret = $('#secret').val();
-  $.get('/api/start/'+secret, function(res){
+  game_id = $('#secret').val();
+  $.get('/api/start/'+game_id, function(res){
     if (res.result) {
       $('body').prepend("<h1>"+res.error+"</h1>");
       return;
     }
-    if (!res.instance || res.instance.id != secret){
+    if (!res.instance || res.instance.id != game_id){
       $.ajax({
         type: 'POST',
         url: '/api/start',
-        data: JSON.stringify({id:secret}),
+        data: JSON.stringify({id:game_id}),
         success: function(res){
-          if (!res.instance || res.instance.id != secret){
+          if (!res.instance || res.instance.id != game_id){
             console.log(res);
             return;
           }
