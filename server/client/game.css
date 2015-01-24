@@ -55,7 +55,7 @@ img.map_object {
   background-image: url('./ui/move_green_btn.png');
 }
 
-#action_move:hover {
+#action_move:active {
   background-image: url('./ui/move_red_btn.png');
 }
 
@@ -73,6 +73,11 @@ img.map_object {
   /*text-indent: -9999px;
   white-space: nowrap;
   overflow: hidden;*/
+}
+
+.action_button:disabled {
+  filter: sepia(100%) opacity(60%);
+  cursor: default;
 }
 
 #actions_panel {
