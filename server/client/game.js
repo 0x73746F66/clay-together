@@ -87,7 +87,6 @@ function drawInventoryForPlayer(player, item){
   if(item != 0){
     var itemHtml = '<img src="objects/' + item + '.png" class="inventory_object"/>';
     $('#player_' + player + '_inventory').append(itemHtml);
-    if (player === this_player) $('#action_drop').attr('disabled',false);
   }
 }
 
@@ -161,6 +160,9 @@ function initializeOnce(data){
   pollForNewTurns();
   $('#createGame').hide();
   $('#game').fadeIn();
+  $('#action_move').attr('disabled', 'disabled');
+  $('#action_skip').attr('disabled', 'disabled');
+  $('#action_drop').attr('disabled', 'disabled');
 }
 
 function chooseCell(){
@@ -174,6 +176,9 @@ function reloadGameCreate(res) {
   $('#createGame').fadeIn();
   $('#game').fadeOut();
   $('#secret').val(game_id);
+  $('#action_move').attr('disabled', 'disabled');
+  $('#action_skip').attr('disabled', 'disabled');
+  $('#action_drop').attr('disabled', 'disabled');
   game_id = null;
   this_player = null;
   action;
@@ -194,7 +199,9 @@ function pollForNewTurns(){
       if (lastInstanceTurn === -1 && res.profile === 3) {
         $('.player_icon').fadeIn('slow');
         $('#action_move').attr('disabled', false);
-        $('#action_skip').attr('disabled',false);
+        $('#action_skip').attr('disabled', false);
+        if ($('#player_'+this_player.id+'_inventory').has('.inventory_object').length === 1)
+          $('#action_drop').attr('disabled',false);
         showMessage('Started', 'info');
         lastInstanceTurn = 0;
       }
