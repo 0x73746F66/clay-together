@@ -11,7 +11,7 @@ var dataset = {
       door: 8
   };
 
-var PLAYER_COUNT = 1;
+var PLAYER_COUNT = 4;
 
 function nextTurn(gamestate){
   var map = gamestate.map;
@@ -23,15 +23,17 @@ function nextTurn(gamestate){
 		console.log('processing player ' + i);
 		if(actions[i]){
 			var actionParsed = /([^_1-9]+)_?(\d+)?_(\d+)?/.exec(actions[i]);
-			if(actionParsed[1] == 'move' && map[actionParsed[2]][actionParsed[3]] == dataset.empty){
-				gamestate.players[i].h = parseInt(actionParsed[3]);
-				gamestate.players[i].v = parseInt(actionParsed[2]);
+			console.log(actionParsed);
+			if(actionParsed[1] == 'move' && map[actionParsed[3]][actionParsed[2]] == dataset.empty){
+				gamestate.players[i].h = parseInt(actionParsed[2]);
+				gamestate.players[i].v = parseInt(actionParsed[3]);
 				console.log('player ' + i + ' moved');
 			}
 		}
 	}
 
   gamestate.pendingActions = {};
+  gamestate.instance.turn++;
 }
 
 exports.create = function (id){

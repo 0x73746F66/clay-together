@@ -13,7 +13,7 @@ app.use('/play', express.static(__dirname + '/client'));
 
 // middleware to use for all requests
 router.use(function(req, res, next) {
-  console.log('Currently ' + MemoryStore.length+' games running');
+  //console.log('Currently ' + MemoryStore.length+' games running');
   res.setHeader("Access-Control-Allow-Origin", "*");
   next();
 });
@@ -53,11 +53,9 @@ router.route('/game/:game_id')
     res.json(game);
   })
   .put(function(req, res) {
-     console.log(req.params.game_id);
-
     var game = MemoryStore[req.params.game_id];
-    console.log(game);
     gameplay.submitAction(game, req.body.player_id, req.body.action);
+    console.log(game);
     // modify game
     res.json(game);
   });
