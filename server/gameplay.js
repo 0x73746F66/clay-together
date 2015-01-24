@@ -28,7 +28,7 @@ function nextTurn(gamestate){
 		movePairs[i] = [ current_hv, current_hv ];
 
 		if(actions[i]){
-			var actionParsed = /([^_1-9]+)_?(\d+)?_(\d+)?/.exec(actions[i]);
+			var actionParsed = /([^_1-9]+)_?(\d+)?_?(\d+)?/.exec(actions[i]);
 
 			if('move' == actionParsed[1] && map[actionParsed[3]][actionParsed[2]] == dataset.empty){
 				var next_hv = actionParsed[2] + '_' + actionParsed[3];

@@ -73,9 +73,14 @@ function actionMoveClick(){
   action = 'move';
 }
 
-function actionMoveDrop(){
+function actionDropClick(){
   getNeighboringEmptyCells(this_player.h, this_player.v).addClass('cell_choosable');
   action = 'drop';
+}
+
+function actionSkipClick(){
+  action = 'skip';
+  submitAction();
 }
 
 function drawInventoryForPlayer(player, items){
@@ -98,6 +103,8 @@ function handleRefresh(data){
   clearInventory();
   drawInventory(data.players);
   drawPlayers(data.players);
+
+  $('#action_skip').attr('disabled',false);
 }
 
 function createGame(){
@@ -141,6 +148,19 @@ function createGame(){
   });
 }
 
+function submitAction(){
+    $.ajax({
+    type: 'PUT',
+    url: '/api/game/'+game_id,
+    data: JSON.stringify({action:action, player_id: this_player.id}),
+    success: function(res){
+      console.log(res);
+      $('.cell_choosable').removeClass('cell_choosable');
+      showMessage('your action: '+action,'info');
+    }
+  });
+}
+
 function initializeOnce(data){
   game_id = data.instance.id;
   this_player = data.players[data.profile];
@@ -151,16 +171,7 @@ function initializeOnce(data){
 function chooseCell(){
   var hv = /\d+_\d+/.exec(this.id);
   action += '_' + hv[0];
-  $.ajax({
-    type: 'PUT',
-    url: '/api/game/'+game_id,
-    data: JSON.stringify({action:action, player_id: this_player.id}),
-    success: function(res){
-      console.log(res);
-      $('.cell_choosable').removeClass('cell_choosable');
-      showMessage('your action: '+action,'info');
-    }
-  });
+  submitAction();
 }
 
 function reloadGameCreate(res) {
@@ -208,7 +219,8 @@ $(document).ready(function(){
   drawMapGrid(map_cells_h,map_cells_v);
   $(document).on('click', '#start', createGame);
   $(document).on('click', '#action_move', actionMoveClick);
-  $(document).on('click', '#action_drop', actionMoveDrop);
+  $(document).on('click', '#action_drop', actionDropClick);
+  $(document).on('click', '#action_skip', actionSkipClick);
   $(document).on('click', '.cell_choosable', chooseCell);
 });
 
