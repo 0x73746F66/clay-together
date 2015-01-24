@@ -34,6 +34,11 @@ function nextTurn(gamestate){
 				var next_hv = actionParsed[2] + '_' + actionParsed[3];
 				movePairs[i] = [ current_hv, next_hv ];
 			}
+
+			if('drop' == actionParsed[1]  && map[actionParsed[3]][actionParsed[2]] == dataset.empty){
+				map[actionParsed[3]][actionParsed[2]] = gamestate.players[i].inventory;
+				gamestate.players[i].inventory = 0;
+			}
 		}
 	}
 
@@ -42,7 +47,6 @@ function nextTurn(gamestate){
 		var newLocation = movePairs[i][bestMoveResolution[i]];
 		gamestate.players[i].h = parseInt(newLocation.split('_')[0]);
 		gamestate.players[i].v = parseInt(newLocation.split('_')[1]);
-		console.log('player ' + i + ' moved to ' + newLocation);
 	}
 
 	gamestate.pendingActions = {};
@@ -79,7 +83,6 @@ function resolve(proposal, pairs){
 			return null;
 		}
 	}
-	console.log(proposal + " " + score);
 	return {
 		score: score,
 		proposal: proposal
