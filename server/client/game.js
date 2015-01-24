@@ -128,6 +128,11 @@ function drawInventoryForPlayer(player, item){
   if(item != 0){
     var itemHtml = '<img src="objects/' + item + '.png" class="inventory_object"/>';
     $('#player_' + player + '_inventory').append(itemHtml);
+    if (player === this_player.id)
+      $('#action_drop').attr('disabled', false);
+  } else {
+    if (player === this_player.id)
+      $('#action_drop').attr('disabled', 'disabled');
   }
 }
 
@@ -136,6 +141,7 @@ function handleRefresh(data){
   var player_id = this_player.id;
   this_player = data.players[this_player.id];
   this_player.id = player_id;
+
   dataset = data.dataset;
   clearMap();
   drawMapEntities(data);
