@@ -4,22 +4,19 @@ $.ajaxSetup({
    dataType: "json"
 });
 
-var map_cells_x = 10;
-var map_cells_y = 6;
+var map_cells_h = 10;
+var map_cells_v = 6;
 
 var this_player = null;
-
-var this_player_x;
-var this_player_y;
 
 var action;
 
 function drawMapGrid(width, height){
   var mapHtml = "";
-  for(var i=0; i<height; i++){
+  for(var v=0; v<height; v++){
     mapHtml += '<div class="map_row">';
-    for(var j=0; j<width; j++){
-      mapHtml += '<span class="map_cell" id="map_cell_' + i + "_" + j + '"/>';
+    for(var h=0; h<width; h++){
+      mapHtml += '<span class="map_cell" id="map_cell_' + h + "_" + v + '"/>';
     }
     mapHtml += '</div>';
   }
@@ -35,14 +32,10 @@ function clearInventory(){
 }
 
 function drawMapEntities(response){
-  for(var i=0; i<response.map.length; i++){
-    for(var j=0; j<response.map[0].length; j++){
-      if(response.map[i][j] != response.dataset.empty){
-        $("#map_cell_" + i + "_" + j).append('<img src="objects/' + response.map[i][j] + '.png" class="map_object"/>');
-        if(this_player == response.map[i][j]){
-          this_player_x = j;
-          this_player_y = i;
-        }
+  for(var v=0; v<map_cells_v; v++){
+    for(var h=0; h<map_cells_h; h++){
+      if(response.map[v][h] != response.dataset.empty){
+        $("#map_cell_" + h + "_" + v).append('<img src="objects/' + response.map[v][h] + '.png" class="map_object"/>');
       }
     }
   }
@@ -50,7 +43,7 @@ function drawMapEntities(response){
 
 function drawPlayers(players){
   for(var i=0; i<players.length; i++){
-    $("#map_cell_" + players[i].x + "_" + players[i].y).append('<img src="objects/' + players[i].sprite + '.png" class="map_object player_icon"/>');
+    $("#map_cell_" + players[i].h + "_" + players[i].v).append('<img src="objects/' + players[i].sprite + '.png" class="map_object player_icon"/>');
   }
 }
 
@@ -60,20 +53,20 @@ function drawInventory(players){
   }
 }
 
-function getNeighboringEmptyCells(x, y){
-  return $('#map_cell_' + (y-1) + "_" + x + ':empty,' +
-    '#map_cell_' + (y+1) + "_" + x + ':empty,' +
-    '#map_cell_' + y + "_" + (x-1) + ':empty,' +
-    '#map_cell_' + y + "_" + (x+1) + ':empty');
+function getNeighboringEmptyCells(h, v){
+  return $('#map_cell_' + (h-1) + "_" + v + ':empty,' +
+    '#map_cell_' + (h+1) + "_" + v + ':empty,' +
+    '#map_cell_' + h + "_" + (v-1) + ':empty,' +
+    '#map_cell_' + h + "_" + (v+1) + ':empty');
 }
 
 function actionMoveClick(){
-  getNeighboringEmptyCells(this_player_x, this_player_y).addClass('cell_choosable');
+  getNeighboringEmptyCells(this_player.h, this_player.v).addClass('cell_choosable');
   action = 'move';
 }
 
 function actionMoveDrop(){
-  getNeighboringEmptyCells(this_player_x, this_player_y).addClass('cell_choosable');
+  getNeighboringEmptyCells(this_player.h, this_player.v).addClass('cell_choosable');
   action = 'drop';
 }
 
@@ -86,7 +79,7 @@ function drawInventoryForPlayer(player, items){
 }
 
 function handleRefresh(data){
-  this_player = data.dataset.player_red;
+  this_player = data.players[0];
   clearMap();
   drawMapEntities(data);
   clearInventory();
@@ -122,8 +115,8 @@ function createGame(){
 }
 
 function chooseCell(){
-  var xy = /\d+_\d+/.exec(this.id);
-  action += '_' + xy[0];
+  var hv = /\d+_\d+/.exec(this.id);
+  action += '_' + hv[0];
   $.ajax({
     type: 'PUT',
     url: '/api/game/'+game_id,
@@ -136,10 +129,9 @@ function chooseCell(){
 }
 
 $(document).ready(function(){
-  drawMapGrid(map_cells_x,map_cells_y);
+  drawMapGrid(map_cells_h,map_cells_v);
   $(document).on('click', '#start', createGame)
   $(document).on('click', '#action_move', actionMoveClick);
   $(document).on('click', '#action_drop', actionMoveDrop);
   $(document).on('click', '.cell_choosable', chooseCell);
-
 });

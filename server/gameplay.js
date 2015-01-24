@@ -52,12 +52,12 @@ exports.create = function (id){
 }
 
 exports.submitAction = function(gameState, playerId, action){
-	var gameState = games[gameId];
-	gameState.pendingActions[playerId] = action;
+	console.log("submitted action " + action);
+/*	gameState.pendingActions[playerId] = action;
 
 	if(Object.keys(gameState.pendingActions).length >= PLAYER_COUNT){
 		nextTurn(gameState);
-	}
+	}*/
 	return gameState;
 }
 
