@@ -5,18 +5,24 @@
     <link rel="stylesheet" type="text/css" href="game.css" />
   </head>
   <body>
-    <div id="game">
+    <div id="message"></div>
+    <div id="createGame">
+      <input type="text" id="secret" name="secret" placeholder="join secret game">
+      <button id="start" type="button">Start</button>
+    </div>
+    <div id="game" style="display:none;">
       <div id="actions_panel">
-        <div id="action_move" class="action_button">Move</div>
-        <div id="action_drop" class="action_button">Drop</div>
+        <button id="action_move" class="action_button" disabled="disabled">Move</button>
+        <button id="action_drop" class="action_button" disabled="disabled">Drop</button>
+        <button id="action_skip" class="action_button" disabled="disabled">Skip</button>
       </div>
       <div id="map_panel">
       </div>
       <div id="players_panel">
-        <div id="player_red_inventory" class="player_inventory"></div>
-        <div id="player_blue_inventory" class="player_inventory"></div>
-        <div id="player_yellow_inventory" class="player_inventory"></div>
-        <div id="player_green_inventory" class="player_inventory"></div>
+        <div id="player_0_inventory" class="player_inventory"></div>
+        <div id="player_1_inventory" class="player_inventory"></div>
+        <div id="player_2_inventory" class="player_inventory"></div>
+        <div id="player_3_inventory" class="player_inventory"></div>
       </div>
     </div>
   </body>
