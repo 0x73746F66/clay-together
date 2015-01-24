@@ -1,16 +1,14 @@
-var game_id = 'uuid';
+var game_id = null;
+var this_player = null;
+var map_cells_h = 10;
+var map_cells_v = 6;
+var action;
+var lastInstanceTurn = 0;
+
 $.ajaxSetup({
    contentType: "application/json",
    dataType: "json"
 });
-
-var map_cells_h = 10;
-var map_cells_v = 6;
-
-var this_player = null;
-
-var action;
-var lastInstanceTurn = -1;
 
 function showMessage(text, type) {
   if ('undefined' === typeof type) type = 'error';
@@ -89,7 +87,6 @@ function drawInventoryForPlayer(player, items){
 }
 
 function handleRefresh(data){
-  hideMessage();
   clearMap();
   drawMapEntities(data);
   clearInventory();
@@ -156,19 +153,36 @@ function chooseCell(){
   });
 }
 
+function reloadGameCreate(res) {
+  showMessage(res.error);
+  $('#createGame').fadeIn();
+  $('#game').fadeOut();
+  $('#secret').val(game_id);
+  game_id = null;
+  this_player = null;
+  action;
+  lastInstanceTurn = 0;
+  clearTimeout(window.pollTurnPointer);
+}
+
 function pollForNewTurns(){
   $.ajax({
     type: 'GET',
     url: '/api/game/'+game_id,
-    success: function(res){
-      console.log(res.instance.turn )
-      if(res.instance.turn > lastInstanceTurn) {
+    success: function(res) {
+      if (!res.result && res.error) {
+        reloadGameCreate(res);
+        return;
+      }
+      if(res.instance && res.instance.turn > lastInstanceTurn) {
         lastInstanceTurn = res.instance.turn;
         handleRefresh(res);
+        hideMessage();
       }
     },
     complete: function(){
-      window.setTimeout(pollForNewTurns, 1000);
+      if (game_id !== null)
+        window.pollTurnPointer = window.setTimeout(pollForNewTurns, 1000);
     }
   });
 }
@@ -196,6 +210,7 @@ function bindUnload() {
 }
 
 function leaveGame(data) {
+  clearTimeout(window.pollTurnPointer);
   $.ajax({
     type: 'PUT',
     url: '/api/leave/'+game_id,

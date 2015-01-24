@@ -49,7 +49,7 @@ router.route('/start/:game_id')
 
 router.route('/game/:game_id')
   .get(function(req, res) {
-    var game = MemoryStore[req.params.game_id]||{result:false, message:'Game abandoned.'};
+    var game = MemoryStore[req.params.game_id]||{result:false, error:'Game abandoned.'};
     res.json(game);
   })
   .put(function(req, res) {
@@ -62,11 +62,15 @@ router.route('/game/:game_id')
 
 router.route('/leave/:game_id')
   .put(function(req, res) {
-    delete MemoryStore[req.params.game_id];
-    MemoryStore.length = --MemoryStore.length;
-    console.log('player ' + req.body.profile.sprite + ' left ' + req.params.game_id);
+    if (MemoryStore.length > 0 && MemoryStore[req.params.game_id]) {
+      delete MemoryStore[req.params.game_id];
+      MemoryStore.length = --MemoryStore.length;
+      console.log('player ' + req.body.profile.sprite + ' left ' + req.params.game_id);
 
-    res.json({result:true, message:'Expect to be shuned dc\'er!'});
+      res.json({result:false, error:'Expect to be shuned dc\'er!'});
+      return;
+    }
+    res.json({result:false, error:'Game already abandoned'});
   });
 
 // REGISTER OUR ROUTES -------------------------------
