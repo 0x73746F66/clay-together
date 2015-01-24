@@ -79,7 +79,7 @@ function drawInventoryForPlayer(player, items){
 }
 
 function handleRefresh(data){
-  this_player = data.players[0];
+  this_player = data.players[data.profile];
   clearMap();
   drawMapEntities(data);
   clearInventory();

@@ -41,7 +41,7 @@ function createGame(id){
 		id: id,
 		turn: 0
 	};
-
+	gamestate.profile = 1;
 	gamestate.pendingActions = {};
 
 	return gamestate;
@@ -53,11 +53,11 @@ exports.create = function (id){
 
 exports.submitAction = function(gameState, playerId, action){
 	console.log("submitted action " + action);
-/*	gameState.pendingActions[playerId] = action;
+	gameState.pendingActions[playerId] = action;
 
 	if(Object.keys(gameState.pendingActions).length >= PLAYER_COUNT){
 		nextTurn(gameState);
-	}*/
+	}
 	return gameState;
 }
 

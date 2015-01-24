@@ -33,7 +33,7 @@ var levels = {
 	    		h: 5,
 	    		v: 5,
 	    		inventory: []
-	    	},
+	    	}
 	    ]
 	}
 
