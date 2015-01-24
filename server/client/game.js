@@ -128,7 +128,7 @@ function createGame(){
           handleRefresh(res);
           $('#createGame').hide();
           $('#game').fadeIn();
-          showMessage('New game started','success');
+          showMessage('New game started - waiting for team to join','success');
           bindUnload();
           setTimeout(function(){
             $('.player_icon').fadeOut('slow');
@@ -143,7 +143,7 @@ function createGame(){
     $('#createGame').hide();
     $('.player_icon').hide();
     $('#game').fadeIn();
-    showMessage('Welcome player '+(++res.profile),'info');
+    showMessage('Welcome player '+(++res.profile) + ' - waiting for team to join','info');
     bindUnload();
   });
 }
@@ -206,7 +206,11 @@ function pollForNewTurns(){
         lastInstanceTurn = res.instance.turn;
         handleRefresh(res);
         hideMessage();
+      } else if (Object.keys(res.pendingActions).length < 4) {
+        var actionsLeft = 4 - Object.keys(res.pendingActions).length;
+        showMessage('Started - ' + actionsLeft + ' players deciding', 'info');
       }
+
     },
     complete: function(){
       if (game_id !== null)
