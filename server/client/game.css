@@ -16,6 +16,7 @@
   float:left;
   margin: 1px;
   text-align: center;
+  position: relative;
   background-size: 100% 100%;
 
   /* tmp until art */
@@ -51,22 +52,28 @@
   border:solid thin gray;
 }
 
+.player_icon {
+  position: absolute;
+  top:0;
+  left:0;
+}
+
 #players_panel {
   clear: both;
 }
 
-#player_red_inventory {
+#player_0_inventory {
   background-color: #990000;
 }
 
-#player_blue_inventory {
+#player_1_inventory {
   background-color: #000099;
 }
 
-#player_green_inventory {
+#player_2_inventory {
   background-color: #009900;
 }
 
-#player_yellow_inventory {
+#player_3_inventory {
   background-color: #999900;
 }

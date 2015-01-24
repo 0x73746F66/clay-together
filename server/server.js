@@ -3,6 +3,7 @@ var bodyParser = require('body-parser');
 var app        = express();
 var router     = express.Router();
 var port       = process.env.PORT || 3000; // set our port
+var gameplay   = require('./gameplay');
 
 var MemoryStore = {};
 
@@ -25,34 +26,7 @@ router.get('/', function(req, res) {
 // ----------------------------------------------------
 router.route('/start/')
   .post(function(req, res) {
-    var game = {
-      map: [
-        [0,1,0,2,5],
-        [0,0,4,0,8],
-        [3,0,0,5,0]
-      ],
-      inventories: {
-        player_red: [],
-        player_blue: [],
-        player_yellow: [],
-        player_green: []
-      },
-      dataset: {
-        empty: 0,
-        player_red: 1,
-        player_blue: 2,
-        player_yellow: 3,
-        player_green: 4,
-        full_chest: 5,
-        empty_chest: 6,
-        key: 7,
-        door: 8
-      },
-      instance: {
-        id: req.body.id,
-        turn: 0
-      }
-    };
+    var game = gameplay.create(req.body.id);
 
     MemoryStore[req.body.id] = game;
     res.json(game);
@@ -66,11 +40,12 @@ router.route('/start/:game_id')
 
 router.route('/game/:game_id')
   .get(function(req, res) {
-    var game = req.session[req.body.game_id];
+    var game = MemoryStore[req.params.game_id];
     res.json(game);
   })
   .put(function(req, res) {
     var game = MemoryStore[req.body.game_id];
+    gameplay.submitAction(game, req.body.player_id, req.body.action);
     // modify game
     res.json(game);
   })

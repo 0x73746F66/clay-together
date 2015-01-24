@@ -48,11 +48,16 @@ function drawMapEntities(response){
   }
 }
 
-function drawInventory(inventories){
-  drawInventoryForPlayer('player_red', inventories.player_red);
-  drawInventoryForPlayer('player_blue', inventories.player_blue);
-  drawInventoryForPlayer('player_yellow', inventories.player_yellow);
-  drawInventoryForPlayer('player_green', inventories.player_green);
+function drawPlayers(players){
+  for(var i=0; i<players.length; i++){
+    $("#map_cell_" + players[i].x + "_" + players[i].y).append('<img src="objects/' + players[i].sprite + '.png" class="map_object player_icon"/>');
+  }
+}
+
+function drawInventory(players){
+  for(var i=0; i<players.length; i++){
+    drawInventoryForPlayer(i, players[i].inventory);
+  }
 }
 
 function getNeighboringEmptyCells(x, y){
@@ -77,7 +82,7 @@ function drawInventoryForPlayer(player, items){
   for(var i=0; i<items.length; i++){
     itemHtml += '<img src="objects/' + items[i] + '.png" class="inventory_object"/>';
   }
-  $('#' + player + '_inventory').append(itemHtml);
+  $('#player_' + player + '_inventory').append(itemHtml);
 }
 
 function handleRefresh(data){
@@ -85,7 +90,8 @@ function handleRefresh(data){
   clearMap();
   drawMapEntities(data);
   clearInventory();
-  drawInventory(data.inventories);
+  drawInventory(data.players);
+  drawPlayers(data.players);
 }
 
 function createGame(){
