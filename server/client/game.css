@@ -19,9 +19,8 @@ body {
   width: 150;
   height: 32;
   background-color: transparent;
-  animation-duration: 4s;
-  animation-name: pulse;
-  animation-iteration-count: 1;
+  -webkit-animation: pulse 4s;
+  animation: pulse 4s;
 }
 
 #start{
@@ -33,21 +32,30 @@ body {
   height: 80;
   background-size: 100% 100%;
   background-color: transparent;
-  animation-duration: 4s;
-  animation-name: hueloop;
-  animation-iteration-count: infinite;
+  -webkit-animation: hueloop 4s infinite;
+  animation: hueloop 4s infinite;
 
 }
 
 .title_letter{
   width: 90px;
   height:90px;
-  animation-name: wriggle;
-  animation-duration: 4s;
-  animation-iteration-count: infinite;
+  -webkit-animation: wriggle 4s infinite;
+  animation: wriggle 4s infinite;
 }
 
 #createGame{
+  width:800;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  text-align: center;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+
+.interstitialPage{
   width:800;
   position: fixed;
   top: 50%;
@@ -287,6 +295,15 @@ img.player_icon {
   }
 }
 
+@-webkit-keyframes hueloop {
+  0% {
+    -webkit-filter: hue-rotate(0deg);
+  }
+  100% {
+    -webkit-filter: hue-rotate(360deg);
+  }
+}
+
 @keyframes wriggle {
   0% {
     transform: rotate(0deg);
@@ -302,6 +319,21 @@ img.player_icon {
   }
 }
 
+
+@-webkit-keyframes wriggle {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  25% {
+    -webkit-transform: rotate(8deg);
+  }
+  75% {
+    -webkit-transform: rotate(-8deg);
+  }
+  100% {
+    -webkit-transform: rotate(0deg);
+  }
+}
 
 
 @keyframes pulse {
@@ -330,7 +362,7 @@ img.player_icon {
   }
 }
 
-@webkit pulse {
+@-webkit-keyframes pulse {
   0% {
     -webkit-filter: brightness(1);
   }
