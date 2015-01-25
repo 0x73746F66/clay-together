@@ -75,9 +75,13 @@ function drawMapEntities(response){
   }
 }
 
+function clearDecorations(){
+  $('.decoration').destroy().remove();
+}
+
 function addDecorativeAnimation(objectId, animation_properties, v, h){
   var anim = $(
-    '<div class="map_object" style="background-image:url(objects/'+objectId + '.png); ' +
+    '<div class="map_object decoration" style="background-image:url(objects/'+objectId + '.png); ' +
     ' background-size: '+ animation_properties.no_of_frames +'00% 100%;">').sprite(
     animation_properties);
   $("#map_cell_" + h + "_" + v).append(anim);
@@ -185,6 +189,7 @@ function handleRefresh(data){
 
   dataset = data.dataset;
   clearMap();
+  clearDecorations();
   drawMapEntities(data);
   clearInventory();
   drawInventory(data.players);
