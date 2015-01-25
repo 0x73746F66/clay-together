@@ -86,7 +86,7 @@ function drawPlayers(players){
   }
   for(var i=0; i<players.length; i++){
     if(i == this_player.id){
-      $("#map_cell_" + players[i].h + "_" + players[i].v).append('<img src="objects/' + players[i].sprite + '.png" class="map_object player_icon this_player"/>');
+      $("#map_cell_" + players[i].h + "_" + players[i].v).append('<img src="objects/' + players[i].sprite + '.png" class="map_object player_icon this_player this_player_pending"/>');
     }
     else{
       $("#map_cell_" + players[i].h + "_" + players[i].v).append('<img src="objects/' + players[i].sprite + '.png" class="map_object player_icon"/>');
@@ -136,24 +136,29 @@ function getNeighboringInteractableCells(h, v, inventory){
 
 function actionInteractClick(){
   clearChoosableOnNeighboringCells(this_player.h, this_player.v);
+  clearPending();
   getNeighboringInteractableCells(this_player.h, this_player.v, this_player.inventory).addClass('cell_choosable');
   action = 'interact';
 }
 
 function actionMoveClick(){
   clearChoosableOnNeighboringCells(this_player.h, this_player.v);
+  clearPending();
   getNeighboringEmptyCells(this_player.h, this_player.v).addClass('cell_choosable');
   action = 'move';
 }
 
 function actionDropClick(){
   clearChoosableOnNeighboringCells(this_player.h, this_player.v);
+  clearPending();
   getNeighboringEmptyCells(this_player.h, this_player.v).addClass('cell_choosable');
   action = 'drop';
 }
 
 function actionSkipClick(){
+  clearPending();
   action = 'skip';
+  $('.this_player').parent().append('<div class="pending_skip pending_marker"></div>');
   submitAction();
 }
 
@@ -232,6 +237,7 @@ function createGame(){
 }
 
 function submitAction(){
+  $('this_player_pending').removeClass('this_player_pending');
     $.ajax({
     type: 'PUT',
     url: '/api/game/'+game_id,
@@ -275,7 +281,20 @@ function initializeOnce(data){
   $('#action_interact').attr('disabled', 'disabled');
 }
 
+function clearPending(){
+  $('.pending_marker').remove();
+}
+
+function addDecorativeAnimation(objectId, animation_properties, v, h){
+  var anim = $(
+    '<div class="map_object" style="background-image:url(objects/'+objectId + '.png); ' +
+    ' background-size: '+ animation_properties.no_of_frames +'00% 100%;">').sprite(
+    animation_properties);
+  $("#map_cell_" + h + "_" + v).append(anim);
+}
+
 function chooseCell(){
+  $(this).append('<div class="pending_' + action + ' pending_marker"></div>');
   var hv = /\d+_\d+/.exec(this.id);
   action += '_' + hv[0];
   submitAction();

@@ -170,6 +170,34 @@ img.player_icon {
   height:50;
 }
 
+.pending_interact {
+  background-image: url(ui/interact_btn_up.png);
+}
+
+.pending_move {
+  background-image: url(ui/move_btn_up.png);
+}
+
+.pending_drop {
+  background-image: url(ui/drop_btn_up.png);
+}
+
+.pending_skip {
+  background-image: url(ui/skip_btn_up.png);
+}
+
+.pending_marker {
+  position:absolute;
+  width: 50px;
+  height: 50px;
+  filter:opacity(80%);
+  background-size: 85% 85%;
+  background-position: center;
+  z-index: 5;
+  top:0;
+  left: 0;
+}
+
 #players_panel {
   float:right;
   margin:15px;
@@ -192,7 +220,7 @@ img.player_icon {
 }
 
 
-.this_player {
+.this_player_pending {
   animation-duration: 4s;
   animation-name: pulse;
   animation-iteration-count: infinite;
