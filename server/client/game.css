@@ -307,9 +307,8 @@ img.player_icon {
 
 
 .this_player_pending {
-  animation-duration: 4s;
-  animation-name: pulse;
-  animation-iteration-count: infinite;
+  -webkit-animation: pulse 4s infinite;
+  animation: pulse 4s infinite;
 }
 
 
