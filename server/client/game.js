@@ -16,7 +16,7 @@ interactsWith[16] = 10; // Planks with water
 interactsWith[15] = 15; // wood with wood to make planks
 interactsWith[12] = 9; //extinguisher with fire
 var audioMuted = store('audio')||false;
-var soundtrackMuted = true;
+var soundtrackMuted = false;
 var audio = {
   click: new Audio("audio/click.wav"),
   splash: new Audio("audio/splash.wav"),
@@ -24,7 +24,7 @@ var audio = {
   build: new Audio("audio/construction.wav"),
   backpack: new Audio("audio/backpack.wav"),
   walkingSound: new Audio("audio/footstepsDirt.wav"),
-  backgroundMusic: new Audio("audio/music.mp3")
+  backgroundMusic: new Audio("audio/shortClip.wav")
 }
 
 $.ajaxSetup({
