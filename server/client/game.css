@@ -11,6 +11,56 @@ body {
   transform: translate(-50%, -50%);
 }
 
+#secret{
+  background-image:url('ui/text_box.png');
+  background-repeat:no-repeat;
+  padding-left:20px;
+  border: none;
+  width: 150;
+  height: 32;
+  background-color: transparent;
+  animation-duration: 4s;
+  animation-name: pulse;
+  animation-iteration-count: 1;
+}
+
+#start{
+  background-image:url('ui/play_btn_up.png');
+  background-repeat:no-repeat;
+  padding-left:20px;
+  border: none;
+  width: 80;
+  height: 80;
+  background-size: 100% 100%;
+  background-color: transparent;
+  animation-duration: 10s;
+  animation-name: hueloop;
+  animation-iteration-count: infinite;
+
+}
+
+.title_letter{
+  width: 90px;
+  height:90px;
+}
+
+#createGame{
+  width:600;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  text-align: center;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+#sign_in {
+  text-align: center;
+  width: 100%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
 #message {
   font-size: 30px;
   text-align: center;
@@ -225,6 +275,17 @@ img.player_icon {
   animation-name: pulse;
   animation-iteration-count: infinite;
 }
+
+
+@keyframes hueloop {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    filter: hue-rotate(360deg);
+  }
+}
+
 
 @keyframes pulse {
   0% {
