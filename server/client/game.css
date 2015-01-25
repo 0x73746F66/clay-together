@@ -32,6 +32,7 @@ body {
   height: 80;
   background-size: 100% 100%;
   background-color: transparent;
+  vertical-align:middle;
   -webkit-animation: hueloop 4s infinite;
   animation: hueloop 4s infinite;
 

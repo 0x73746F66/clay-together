@@ -363,9 +363,9 @@ function stageComplete(gamestate){
 
   hideMessage();
   $('#win').fadeIn();
-  $('#win').html('<h1>Congratulations!</h1>\
+  $('#win').html('<div class="interstitialPage"><h1>Congratulations!</h1>\
                   <div>Finished in ' + gamestate.stats.turns + ' turns, time elapsed: ' + elapsed + '.</div>\
-                  <div><button id="nextStage" type="button">Next Stage</button></div>');
+                  <div><button id="nextStage" type="button">Next Stage</button></div></div>');
 
   $('#game').fadeOut();
   $('#action_move').attr('disabled', 'disabled');
@@ -437,6 +437,7 @@ $(document).ready(function(){
     }, false);
     audio.backgroundMusic.play();
   }
+
 });
 
 function bindUnload() {
