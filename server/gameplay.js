@@ -29,62 +29,94 @@ function nextTurn(gamestate){
   var map = gamestate.map;
   var actions = gamestate.pendingActions;
   var movePairs = [];
-
+  gamestate.stats.turns = ++gamestate.stats.turns;
   for(var i=0; i<PLAYER_COUNT; i++){
     console.log('processing player ' + i);
     var current_hv = gamestate.players[i].h + '_' + gamestate.players[i].v;
     var current_inventory = gamestate.players[i].inventory;
     movePairs[i] = [ current_hv, current_hv ];
 
-    if(actions[i]){
+    if(actions[i]) {
       var actionParsed = /([^_1-9]+)_?(\d+)?_?(\d+)?/.exec(actions[i]);
 
       if('move' == actionParsed[1] && map[actionParsed[3]][actionParsed[2]] == dataset.empty){
         var next_hv = actionParsed[2] + '_' + actionParsed[3];
         movePairs[i] = [ current_hv, next_hv ];
+
+        console.log("Moved");
       }
 
       if('drop' == actionParsed[1]  && map[actionParsed[3]][actionParsed[2]] == dataset.empty){
         map[actionParsed[3]][actionParsed[2]] = gamestate.players[i].inventory;
         gamestate.players[i].inventory = 0;
+
+        console.log("Dropped item");
       }
 
       if('interact' == actionParsed[1]){
         if(dataset.full_chest == map[actionParsed[3]][actionParsed[2]]){
-        var chest_content = gamestate.chests[actionParsed[3]+'_'+actionParsed[2]];
+          var chest_content = gamestate.chests[actionParsed[3]+'_'+actionParsed[2]];
+
           map[actionParsed[3]][actionParsed[2]] = dataset.empty_chest;
           gamestate.players[i].inventory = chest_content;
+
           console.log("Opened chest");
         }
         else if(current_inventory == dataset.bucket && map[actionParsed[3]][actionParsed[2]] == dataset.water){
           gamestate.players[i].inventory = dataset.extinguisher;
+
           console.log("Collected water");
         }
         else if(current_inventory == dataset.extinguisher && map[actionParsed[3]][actionParsed[2]] == dataset.fire){
           gamestate.players[i].inventory = 0;
           map[actionParsed[3]][actionParsed[2]] = 0;
+
           console.log("Put out fire");
         }
         else if(current_inventory == dataset.planks && map[actionParsed[3]][actionParsed[2]] == dataset.water){
           gamestate.players[i].inventory = 0;
           map[actionParsed[3]][actionParsed[2]] = 0;
           gamestate.bridges.push(actionParsed[2]+'_'+actionParsed[3]);
+
           console.log("built bridge");
         }
         else if(current_inventory == dataset.key && map[actionParsed[3]][actionParsed[2]] == dataset.door){
           gamestate.players[i].inventory = 0;
           map[actionParsed[3]][actionParsed[2]] = 0;
-          gamestate.complete = true;
+          gamestate.stats.endTime = Date.now();
+          var thisLevel = gamestate.level,
+              nextlevel = ++thisLevel;
+
+          gamestate.instance.turn = 0;
+          gamestate.profile = 4;
+          gamestate.pendingActions = {};
+          if ('undefined' !== typeof maps.levels[nextlevel]) {
+            gamestate.level = nextlevel;
+            gamestate.map = maps.levels[nextlevel].map;
+            gamestate.bridges = maps.levels[nextlevel].bridges;
+            gamestate.chests = maps.levels[nextlevel].chests;
+            gamestate.players = maps.levels[nextlevel].players;
+          } else {
+            gamestate.level = 0;
+            gamestate.map = maps.levels[0].map;
+            gamestate.bridges = maps.levels[0].bridges;
+            gamestate.chests = maps.levels[0].chests;
+            gamestate.players = maps.levels[0].players;
+          }
+
+          return;
           console.log("puzzle complete");
         }
         else if(current_inventory == dataset.wood && map[actionParsed[3]][actionParsed[2]] == dataset.wood){
           gamestate.players[i].inventory = dataset.planks;
           map[actionParsed[3]][actionParsed[2]] = 0;
+
           console.log("made planks");
         }
         else if (current_inventory == dataset.empty && dataset.collectables.indexOf(map[actionParsed[3]][actionParsed[2]]) !== -1){
           gamestate.players[i].inventory = map[actionParsed[3]][actionParsed[2]];
           map[actionParsed[3]][actionParsed[2]] = dataset.empty;
+
           console.log("Collected item");
         }
         else {
@@ -141,21 +173,22 @@ function resolve(proposal, pairs){
   }
 }
 
-
-
-exports.create = function (id){
-  var gamestate = maps.cloneLevel('testLevel');
+function create (id, level, profile){
+  if ('undefined' === typeof level) level = 0;
+  if ('undefined' === typeof profile) profile = 0;
+  var gamestate = maps.cloneLevel(level);
   gamestate.dataset = dataset;
   gamestate.instance = {
     id: id,
     turn: 0
   };
-  gamestate.profile = 0;
+  gamestate.profile = profile;
   gamestate.pendingActions = {};
 
   return gamestate;
 }
 
+exports.create = create;
 exports.submitAction = function(gameState, playerId, action){
   console.log("submitted action " + action);
   gameState.pendingActions[playerId] = action;

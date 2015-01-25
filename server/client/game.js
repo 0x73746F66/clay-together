@@ -4,6 +4,9 @@ var map_cells_h = 10;
 var map_cells_v = 6;
 var action;
 var lastInstanceTurn = -1;
+var mapLevel = 0;
+var stageTimer = 0;
+var stageTimerInterval;
 var dataset = {};
 
 var interactsWith = [];
@@ -199,8 +202,16 @@ function enableDisableInteractAction(data){
   }
 }
 
+function nextGame(){
+  // at this stage the next game is already running!
+  $('#win').hide();
+  $('#game').fadeIn();
+  $('#action_move').attr('disabled', false);
+  $('#action_skip').attr('disabled', false);
+}
+
 function createGame(){
-  game_id = $('#secret').val();
+  game_id = game_id||$('#secret').val();
   $.get('/api/start/'+game_id, function(res){
     if (!res.result && res.error) {
       showMessage(res.error);
@@ -273,7 +284,12 @@ function initializeOnce(data){
   this_player = data.players[data.profile];
   this_player.id = data.profile;
   pollForNewTurns();
+  stageTimerInterval = setInterval(function(){
+    stageTimer = ++stageTimer;
+    $('#timer').text(stageTimer);
+  },1000);
   $('#createGame').hide();
+  $('#win').hide();
   $('#game').fadeIn();
   $('#action_move').attr('disabled', 'disabled');
   $('#action_skip').attr('disabled', 'disabled');
@@ -304,6 +320,7 @@ function reloadGameCreate(res) {
   showMessage(res.error);
   $('#createGame').fadeIn();
   $('#game').fadeOut();
+  $('#win').fadeOut();
   $('#secret').val(game_id);
   $('#action_move').attr('disabled', 'disabled');
   $('#action_skip').attr('disabled', 'disabled');
@@ -311,10 +328,39 @@ function reloadGameCreate(res) {
   $('#action_interact').attr('disabled', 'disabled');
 
   game_id = null;
-  this_player = null;
   action;
   lastInstanceTurn = -1;
   clearTimeout(window.pollTurnPointer);
+}
+
+function stopTurnTimer(){
+  stageTimer = 0;
+  $('#timer').empty();
+  clearInterval(stageTimerInterval);
+}
+
+function stageComplete(gamestate){
+  var elapsed,
+      difference = gamestate.stats.endTime - gamestate.stats.startTime,
+      hours = Math.floor(difference / 36e5),
+      minutes = Math.floor(difference % 36e5 / 60000);
+
+  elapsed = hours + 'hr' + (parseInt(hours)>1?'s':'') + ' ' +
+            minutes + 'min' + (parseInt(minutes)>1?+'s':'');
+
+  stopTurnTimer();
+
+  hideMessage();
+  $('#win').fadeIn();
+  $('#win').html('<h1>Congratulations!</h1>\
+                  <div>Finished in ' + gamestate.stats.turns + ' turns, time elapsed: ' + elapsed + '.</div>\
+                  <div><button id="nextStage" type="button">Next Stage</button></div>');
+
+  $('#game').fadeOut();
+  $('#action_move').attr('disabled', 'disabled');
+  $('#action_skip').attr('disabled', 'disabled');
+  $('#action_drop').attr('disabled', 'disabled');
+  $('#action_interact').attr('disabled', 'disabled');
 }
 
 function pollForNewTurns(){
@@ -326,6 +372,12 @@ function pollForNewTurns(){
         reloadGameCreate(res);
         return;
       }
+      if (res.level !== mapLevel) {
+        mapLevel = res.level;
+        lastInstanceTurn = 0;
+        stageComplete(res);
+        handleRefresh(res);
+      }
       if (lastInstanceTurn === -1 && res.profile !== 3) return;
       if (lastInstanceTurn === -1 && res.profile >= 3) {
         $('.player_icon').fadeIn('slow');
@@ -334,11 +386,13 @@ function pollForNewTurns(){
         if ($('#player_'+this_player.id+'_inventory').has('.inventory_object').length === 1)
           $('#action_drop').attr('disabled',false);
         showMessage('Started', 'info');
+        stageTimer = 0;
         lastInstanceTurn = 0;
         enableDisableInteractAction(res);
       }
-      if(res.instance && res.instance.turn > lastInstanceTurn) {
+      if (res.instance && res.instance.turn > lastInstanceTurn) {
         lastInstanceTurn = res.instance.turn;
+        stageTimer = 0;
         handleRefresh(res);
         hideMessage();
       } else if (Object.keys(res.pendingActions).length < 4) {
@@ -362,6 +416,7 @@ $(document).ready(function(){
   $(document).on('click', '#action_skip', actionSkipClick);
   $(document).on('click', '#action_interact', actionInteractClick);
   $(document).on('click', '.cell_choosable', chooseCell);
+  $(document).on('click', '#nextStage', nextGame);
 
   $('#audio').click(toggleAudio).removeClass('on mute').addClass(audioMuted?'mute':'on');
   if (!audioMuted) {
