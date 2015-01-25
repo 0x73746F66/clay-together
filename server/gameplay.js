@@ -90,16 +90,17 @@ function nextTurn(gamestate){
           gamestate.instance.turn = 0;
           gamestate.profile = 4;
           gamestate.pendingActions = {};
-          delete gamestate.bridges;
           gamestate.bridges = [];
           if ('undefined' !== typeof maps.levels[nextlevel]) {
             gamestate.level = nextlevel;
+            gamestate.bridges = maps.levels[nextlevel].bridges;
             gamestate.map = maps.levels[nextlevel].map;
             gamestate.chests = maps.levels[nextlevel].chests;
             gamestate.players = maps.levels[nextlevel].players;
           } else {
             gamestate.level = 0;
             gamestate.map = maps.levels[0].map;
+            gamestate.bridges = maps.levels[0].bridges;
             gamestate.chests = maps.levels[0].chests;
             gamestate.players = maps.levels[0].players;
           }

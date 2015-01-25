@@ -216,6 +216,7 @@ function enableDisableInteractAction(data){
 function nextGame(){
   // at this stage the next game is already running!
   $('#win').hide();
+  $('.bridge').hide();
   $('#game').fadeIn();
   $('#action_move').attr('disabled', false);
   $('#action_skip').attr('disabled', false);
