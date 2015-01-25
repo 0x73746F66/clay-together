@@ -24,7 +24,7 @@ var audio = {
   build: new Audio("audio/construction.wav"),
   backpack: new Audio("audio/backpack.wav"),
   walkingSound: new Audio("audio/footstepsDirt.wav"),
-  backgroundMusic: new Audio("audio/shortClip.wav")
+  backgroundMusic: new Audio("audio/shortClip.mp3")
 }
 
 $.ajaxSetup({
