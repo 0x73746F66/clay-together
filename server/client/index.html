@@ -18,7 +18,13 @@
   <body>
     <div id="timer"></div>
     <div id="message"></div>
-    <div id="win"></div>
+    <div id="win" style="display:none">
+    	<h1>CONGRATULATIONS!</h1>
+        <div>Finished in <span id="completion_moves"></span> turns, time elapsed: <span id="completion_time"></span>.</div>
+        <div>
+        	<button id="nextStage" type="button"></button>
+        </div>
+    </div>
     <div class="audioControl">
       <a href="Javascript:void(-1);" id="audio" class="on"></a>
     </div>

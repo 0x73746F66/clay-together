@@ -38,6 +38,21 @@ body {
 
 }
 
+#nextStage{
+  background-image:url('ui/play_btn_up.png');
+  background-repeat:no-repeat;
+  padding-left:20px;
+  border: none;
+  width: 120;
+  height: 120;
+  background-size: 100% 100%;
+  background-color: transparent;
+  vertical-align:middle;
+  -webkit-animation: hueloop 4s infinite;
+  animation: hueloop 4s infinite;
+
+}
+
 .title_letter{
   width: 90px;
   height:90px;
@@ -46,6 +61,17 @@ body {
 }
 
 #createGame{
+  width:800;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  text-align: center;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+
+#win{
   width:800;
   position: fixed;
   top: 50%;

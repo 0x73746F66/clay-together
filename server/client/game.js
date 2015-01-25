@@ -364,9 +364,9 @@ function stageComplete(gamestate){
 
   hideMessage();
   $('#win').fadeIn();
-  $('#win').html('<div class="interstitialPage"><h1>Congratulations!</h1>\
-                  <div>Finished in ' + gamestate.stats.turns + ' turns, time elapsed: ' + elapsed + '.</div>\
-                  <div><button id="nextStage" type="button">Next Stage</button></div></div>');
+  $('#interstitialPage').show();
+  $('#completion_moves').text(gamestate.stats.turns);
+  $('#completion_time').text(elapsed);
 
   $('#game').fadeOut();
   $('#action_move').attr('disabled', 'disabled');
