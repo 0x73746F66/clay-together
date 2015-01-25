@@ -382,6 +382,7 @@ function pollForNewTurns(){
     success: function(res) {
       if (!res.result && res.error) {
         reloadGameCreate(res);
+        clearChoosableOnNeighboringCells();
         return;
       }
       if (res.level !== mapLevel) {
