@@ -2,7 +2,7 @@ var maps = require('./maps.js');
 var dataset = {
       collectables: [7,11,12,14,15,16],
       animated: {
-      	"9": {fps: 4, no_of_frames: 4}
+        "9": {fps: 4, no_of_frames: 4}
       },
       empty: 0,
       player_red: 1,
@@ -93,13 +93,13 @@ function nextTurn(gamestate){
           if ('undefined' !== typeof maps.levels[nextlevel]) {
             gamestate.level = nextlevel;
             gamestate.map = maps.levels[nextlevel].map;
-            gamestate.bridges = maps.levels[nextlevel].bridges;
+            gamestate.bridges = [];
             gamestate.chests = maps.levels[nextlevel].chests;
             gamestate.players = maps.levels[nextlevel].players;
           } else {
             gamestate.level = 0;
             gamestate.map = maps.levels[0].map;
-            gamestate.bridges = maps.levels[0].bridges;
+            gamestate.bridges = [];
             gamestate.chests = maps.levels[0].chests;
             gamestate.players = maps.levels[0].players;
           }
