@@ -33,7 +33,7 @@ body {
   height: 80;
   background-size: 100% 100%;
   background-color: transparent;
-  animation-duration: 10s;
+  animation-duration: 4s;
   animation-name: hueloop;
   animation-iteration-count: infinite;
 
@@ -42,10 +42,13 @@ body {
 .title_letter{
   width: 90px;
   height:90px;
+  animation-name: wriggle;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
 }
 
 #createGame{
-  width:600;
+  width:800;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -57,8 +60,6 @@ body {
 #sign_in {
   text-align: center;
   width: 100%;
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
 }
 
 #message {
@@ -285,6 +286,22 @@ img.player_icon {
     filter: hue-rotate(360deg);
   }
 }
+
+@keyframes wriggle {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(8deg);
+  }
+  75% {
+    transform: rotate(-8deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
 
 
 @keyframes pulse {
