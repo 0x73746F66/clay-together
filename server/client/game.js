@@ -358,7 +358,7 @@ function stageComplete(gamestate){
       minutes = Math.floor(difference % 36e5 / 60000);
 
   elapsed = hours + 'hr' + (parseInt(hours)>1?'s':'') + ' ' +
-            minutes + 'min' + (parseInt(minutes)>1?+'s':'');
+            minutes + 'min';
 
   stopTurnTimer();
 
