@@ -16,7 +16,9 @@ interactsWith[16] = 10; // Planks with water
 interactsWith[15] = 15; // wood with wood to make planks
 interactsWith[12] = 9; //extinguisher with fire
 var audioMuted = store('audio')||false;
+var soundtrackMuted = true;
 var audio = {
+  click: new Audio("audio/click.wav"),
   splash: new Audio("audio/splash.wav"),
   drop: new Audio("audio/drop.wav"),
   build: new Audio("audio/construction.wav"),
@@ -146,6 +148,7 @@ function actionInteractClick(){
   clearPending();
   getNeighboringInteractableCells(this_player.h, this_player.v, this_player.inventory).addClass('cell_choosable');
   action = 'interact';
+  if (!audioMuted) audio.click.play();
 }
 
 function actionMoveClick(){
@@ -153,6 +156,7 @@ function actionMoveClick(){
   clearPending();
   getNeighboringEmptyCells(this_player.h, this_player.v).addClass('cell_choosable');
   action = 'move';
+  if (!audioMuted) audio.click.play();
 }
 
 function actionDropClick(){
@@ -160,6 +164,7 @@ function actionDropClick(){
   clearPending();
   getNeighboringEmptyCells(this_player.h, this_player.v).addClass('cell_choosable');
   action = 'drop';
+  if (!audioMuted) audio.click.play();
 }
 
 function actionSkipClick(){
@@ -167,6 +172,7 @@ function actionSkipClick(){
   action = 'skip';
   $('.this_player').parent().append('<div class="pending_skip pending_marker"></div>');
   submitAction();
+  if (!audioMuted) audio.click.play();
 }
 
 function drawInventoryForPlayer(player, item){
@@ -424,7 +430,7 @@ $(document).ready(function(){
   $(document).on('click', '#nextStage', nextGame);
 
   $('#audio').click(toggleAudio).removeClass('on mute').addClass(audioMuted?'mute':'on');
-  if (!audioMuted) {
+  if (!audioMuted && !soundtrackMuted) {
     audio.backgroundMusic.addEventListener('ended', function() {
       this.currentTime = 0;
       if (!audioMuted) this.play();
@@ -466,7 +472,7 @@ function toggleAudio() {
   if (audioMuted) {
     audio.backgroundMusic.pause();
     audio.walkingSound.pause();
-  } else {
+  } else if (!soundtrackMuted) {
     audio.backgroundMusic.addEventListener('ended', function() {
       this.currentTime = 0;
       if (!audioMuted) this.play();
