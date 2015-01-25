@@ -38,6 +38,12 @@ body {
 
 }
 
+#start:active {
+  background-image: url('./ui/play_btn_down.png');
+  -webkit-animation: hueloop 4s infinite;
+  animation: hueloop 4s infinite;
+}
+
 #nextStage{
   background-image:url('ui/play_btn_up.png');
   background-repeat:no-repeat;
@@ -50,7 +56,12 @@ body {
   vertical-align:middle;
   -webkit-animation: hueloop 4s infinite;
   animation: hueloop 4s infinite;
+}
 
+#start:active {
+  background-image: url('./ui/play_btn_down.png');
+  -webkit-animation: hueloop 4s infinite;
+  animation: hueloop 4s infinite;
 }
 
 .title_letter{
