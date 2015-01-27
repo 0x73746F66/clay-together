@@ -1,3 +1,5 @@
+DEFAULT_WIDTH = 800;
+DEFAULT_HEIGHT = 600;
 window.onload = function() {
   (function (window, undefined) {
     "use scrict";
@@ -7,23 +9,7 @@ window.onload = function() {
         h = window.innerHeight,
         width = h > w ? h : w,
         height = h > w ? w : h,
-        game = new Phaser.Game(width < 800 ? 800 : width, height < 600 ? 600 : height, Phaser.CANVAS, 'game');
-
-    function resizeGame () {
-      var width = window.innerWidth;
-      var height = window.innerHeight;
-      game.width = width;
-      game.height = height;
-      game.stage.width = width;
-      game.stage.height = height;
-      game.world.setBounds(0, 0, width, height);
-      game.camera.setSize(width, height);
-      game.camera.setBoundsToWorld();
-      if (game.renderType === Phaser.WEBGL) {
-        game.renderer.resize(width, height);
-      }
-    }
-    window.onresize = resizeGame;
+        game = new Phaser.Game(DEFAULT_WIDTH, DEFAULT_HEIGHT, Phaser.CANVAS, '');
 
     /**
      * Class definition
@@ -73,18 +59,18 @@ window.onload = function() {
         this.stage.backgroundColor = this.stageConfig.background;
         this.background = this.add.sprite(0, 0, 'startScreen');
 
-        this.scoreText = this.add.text(30, this.game.height-30, 'Score: ' + this.userPoints, {
+        this.scoreText = this.add.text(30, DEFAULT_HEIGHT-30, 'Score: ' + this.userPoints, {
           font: "20px Arial",
           fill: this.stageConfig.font,
           align: "left"
         });
-        this.timerText = this.add.text(520, this.game.height-30, 'Timer: ' + this.limitTimer, {
+        this.timerText = this.add.text(520, DEFAULT_HEIGHT-30, 'Timer: ' + this.limitTimer, {
           font: "20px Arial",
           fill: this.stageConfig.font,
           align: "left"
         });
         //this.stageConfig.title
-        this.introText = this.add.text(this.world.centerX, this.game.height/3, 'Click to Start', {
+        this.introText = this.add.text(this.world.centerX, DEFAULT_HEIGHT/3, 'Click to Start', {
           font: "30px Arial",
           fill: this.stageConfig.font,
           align: "center"
@@ -111,8 +97,8 @@ window.onload = function() {
         if (this.live) {
           if (this.paddle.x < 25) {
             this.paddle.x = 25;
-          } else if (this.paddle.x > this.width - 25) {
-            this.paddle.x = this.width - 25;
+          } else if (this.paddle.x > DEFAULT_WIDTH - 25) {
+            this.paddle.x = DEFAULT_WIDTH - 25;
           } else {
             this.paddle.x = this.input.x + 25;
           }
@@ -129,9 +115,6 @@ window.onload = function() {
        * @method start
        */
       start: function () {
-        if (!this.scale.isFullScreen) {
-          return;
-        }
         var self = this;
         if (!self.live) {
           self.live = true;
@@ -146,7 +129,7 @@ window.onload = function() {
             }
           },1000);
 
-          self.paddle = self.add.sprite(self.world.centerX, self.game.height-30, 'paddle');
+          self.paddle = self.add.sprite(self.world.centerX, DEFAULT_HEIGHT-30, 'paddle');
           self.paddle.anchor.setTo(1, 1);
           self.physics.enable(self.paddle, Phaser.Physics.ARCADE);
           self.paddle.body.collideWorldBounds = true;
@@ -159,7 +142,7 @@ window.onload = function() {
         }
       },
       dropItem: function (imgKey) {
-        var instance = this.add.sprite(rand(20,(this.game.width-20)), 0, imgKey);
+        var instance = this.add.sprite(rand(20,(DEFAULT_WIDTH-20)), 0, imgKey);
         instance.catchValue = this.loadedItem.value;
         this.physics.enable(instance, Phaser.Physics.ARCADE);
         instance.checkWorldBounds = true;
@@ -194,11 +177,10 @@ window.onload = function() {
        * @method gofull
        */
       gofull: function () {
-        if (!this.scale.isFullScreen) {
+        /* if (!this.scale.isFullScreen) {
           this.scale.startFullScreen(false);
-          resizeGame();
           info("full screen mode");
-        }
+        } */
       }
     };
     game.state.add('Game', PhaserGame, true);
