@@ -1,5 +1,3 @@
-DEFAULT_WIDTH = 800;
-DEFAULT_HEIGHT = 600;
 window.onload = function() {
   (function (window, undefined) {
     "use scrict";
@@ -10,8 +8,8 @@ window.onload = function() {
         width = h > w ? h : w,
         height = h > w ? w : h,
         game = new Phaser.Game(
-          width > DEFAULT_WIDTH ? width : DEFAULT_WIDTH,
-          height > DEFAULT_HEIGHT ? height : DEFAULT_HEIGHT,
+          window.innerWidth,
+          window.innerHeight,
           Phaser.CANVAS,
           'game'
         );
