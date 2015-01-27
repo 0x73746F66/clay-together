@@ -9,13 +9,13 @@ window.onload = function() {
         height = h > w ? w : h,
         game = new Phaser.Game(width < 800 ? 800 : width, height < 600 ? 600 : height, Phaser.CANVAS, 'game');
 
-    function resizeGame (event) {
+    function resizeGame () {
       var width = window.innerWidth;
       var height = window.innerHeight;
       game.width = width;
       game.height = height;
-      game.stage.bounds.width = width;
-      game.stage.bounds.height = height;
+      game.stage.width = width;
+      game.stage.height = height;
       game.world.setBounds(0, 0, width, height);
       game.camera.setSize(width, height);
       game.camera.setBoundsToWorld();
@@ -37,6 +37,7 @@ window.onload = function() {
       this.stageConfig = null;
       this.userPoints = 0;
       this.stageTimer = 60;
+      this.limitTimer = 60;
       this.stageTimerInterval;
       this.introText = null;
       this.scoreText = null;
@@ -77,7 +78,7 @@ window.onload = function() {
           fill: this.stageConfig.font,
           align: "left"
         });
-        this.timerText = this.add.text(520, this.game.height-30, 'Timer: ' + this.stageTimer, {
+        this.timerText = this.add.text(520, this.game.height-30, 'Timer: ' + this.limitTimer, {
           font: "20px Arial",
           fill: this.stageConfig.font,
           align: "left"
@@ -115,6 +116,9 @@ window.onload = function() {
           } else {
             this.paddle.x = this.input.x + 25;
           }
+          if (this.liveItems.length <= 1) {
+            this.dropItem('item');
+          }
           for(var i=0;i<this.liveItems.length;i++){
             this.physics.arcade.collide(this.liveItems[i], this.paddle, this.caught, null, this);
           }
@@ -134,9 +138,12 @@ window.onload = function() {
           self.introText.setText('GO!');
           self.stageTimerInterval = setInterval(function(){
             self.stageTimer--;
-            self.timerText.setText('timer: ' + self.stageTimer);
+            self.timerText.setText('Timer: ' + self.stageTimer);
             self.introText.setText('');
-            if (self.stageTimer <= 0) self.stageOver();
+            if (self.stageTimer <= 0) {
+              self.stageOver();
+              clearInterval(self.stageTimerInterval);
+            }
           },1000);
 
           self.paddle = self.add.sprite(self.world.centerX, self.game.height-30, 'paddle');
@@ -158,7 +165,7 @@ window.onload = function() {
         instance.checkWorldBounds = true;
         instance.body.collideWorldBounds = true;
         instance.body.bounce.set(1);
-        instance.body.gravity.y = rand(180,250);
+        instance.body.gravity.y = rand(150,250);
         instance.events.onOutOfBounds.add(this.missed, this);
         this.liveItems.push(instance);
       },
@@ -167,13 +174,12 @@ window.onload = function() {
         instance.kill();
       },
       stageOver: function () {
-        clearInterval(this.stageTimerInterval)
         this.live = false;
         this.paddle.kill();
         this.introText.setText('Game Over\nYou caught '+this.userPoints);
         this.paddle = null;
         this.userPoints = 0;
-        this.stageTimer = 60;
+        this.stageTimer = 30+this.limitTimer;
         this.liveItems = [];
       },
       caught: function (instance) {
@@ -190,6 +196,7 @@ window.onload = function() {
       gofull: function () {
         if (!this.scale.isFullScreen) {
           this.scale.startFullScreen(false);
+          resizeGame();
           info("full screen mode");
         }
       }
