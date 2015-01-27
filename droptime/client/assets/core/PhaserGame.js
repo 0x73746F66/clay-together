@@ -62,18 +62,18 @@ window.onload = function() {
         this.stage.backgroundColor = this.stageConfig.background;
         this.background = this.add.sprite(0, 0, 'startScreen');
 
-        this.scoreText = this.add.text(30, DEFAULT_HEIGHT-30, 'Score: ' + this.userPoints, {
+        this.scoreText = this.add.text(30, this.game.height-30, 'Score: ' + this.userPoints, {
           font: "20px Arial",
           fill: this.stageConfig.font,
           align: "left"
         });
-        this.timerText = this.add.text(520, DEFAULT_HEIGHT-30, 'Timer: ' + this.limitTimer, {
+        this.timerText = this.add.text(520, this.game.height-30, 'Timer: ' + this.limitTimer, {
           font: "20px Arial",
           fill: this.stageConfig.font,
           align: "left"
         });
         //this.stageConfig.title
-        this.introText = this.add.text(this.world.centerX, DEFAULT_HEIGHT/3, 'Click to Start', {
+        this.introText = this.add.text(this.world.centerX, this.game.height/3, 'Click to Start', {
           font: "30px Arial",
           fill: this.stageConfig.font,
           align: "center"
@@ -99,8 +99,8 @@ window.onload = function() {
         if (this.live) {
           if (this.paddle.x < 25) {
             this.paddle.x = 25;
-          } else if (this.paddle.x > DEFAULT_WIDTH - 25) {
-            this.paddle.x = DEFAULT_WIDTH - 25;
+          } else if (this.paddle.x > this.game.width - 25) {
+            this.paddle.x = this.game.width - 25;
           } else {
             this.paddle.x = this.input.x + 25;
           }
@@ -135,7 +135,7 @@ window.onload = function() {
             }
           },1000);
 
-          self.paddle = self.add.sprite(self.world.centerX, DEFAULT_HEIGHT-30, 'paddle');
+          self.paddle = self.add.sprite(self.world.centerX, this.game.height-30, 'paddle');
           self.paddle.anchor.setTo(1, 1);
           self.physics.enable(self.paddle, Phaser.Physics.ARCADE);
           self.paddle.body.collideWorldBounds = true;
@@ -148,7 +148,7 @@ window.onload = function() {
         }
       },
       dropItem: function (imgKey) {
-        var instance = this.add.sprite(rand(20,(DEFAULT_WIDTH-20)), 0, imgKey);
+        var instance = this.add.sprite(rand(20,(this.game.width-20)), 0, imgKey);
         instance.catchValue = this.loadedItem.value;
         this.physics.enable(instance, Phaser.Physics.ARCADE);
         instance.checkWorldBounds = true;
