@@ -3,7 +3,7 @@ var bodyParser = require('body-parser');
 var app        = express();
 var router     = express.Router();
 var port       = process.env.PORT || 3001; // set our port
-var version    = '0.0.1-dev';
+var version    = '0.0.2-dev';
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -51,4 +51,5 @@ router.use(function(req, res, next) {
 // START THE SERVER
 // =============================================================================
 app.listen(port);
+console.log('Version ' + version);
 console.log('Magic happens on port ' + port);
