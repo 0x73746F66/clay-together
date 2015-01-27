@@ -39,6 +39,8 @@ http://ec2-54-66-193-144.ap-southeast-2.compute.amazonaws.com:3000/play/
 
 # Droptime 
 
+![hosted image](http://s6.postimg.org/xuuvi6ki9/droptime.png)
+
 This game was not part of the submitted work for GGJ 2015 but if your keen to try it, go to;
 
 http://ec2-54-66-193-144.ap-southeast-2.compute.amazonaws.com:3001/droptime/
