@@ -15,6 +15,10 @@ Work together to solve puzzles, or go rouge to prevent your tema from completing
 
 ## Playing Clay together
 
+http://goo.gl/OGEUZL
+
+or
+
 http://ec2-54-66-193-144.ap-southeast-2.compute.amazonaws.com/play/
 
 or
@@ -31,6 +35,7 @@ http://ec2-54-66-193-144.ap-southeast-2.compute.amazonaws.com:3000/play/
 - Build bridges, put out fires, and get that door unlocked!
 - Most importantly, HAVE FUN
 
+![in game image](http://globalgamejam.org/sites/default/files/styles/game_content__wide/public/games/screenshots/capture1_5.png?itok=jrOfDQe0)
 
 # Droptime 
 
