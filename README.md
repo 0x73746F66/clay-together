@@ -15,7 +15,11 @@ Work together to solve puzzles, or go rouge to prevent your tema from completing
 
 ## Playing Clay together
 
-http://ec2-54-66-193-144.ap-southeast-2.compute.amazonaws.com:3001/droptime/
+http://ec2-54-66-193-144.ap-southeast-2.compute.amazonaws.com/play/
+
+or
+
+http://ec2-54-66-193-144.ap-southeast-2.compute.amazonaws.com:3000/play/
 
 ## Instructions
 
