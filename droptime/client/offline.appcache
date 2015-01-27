@@ -1,0 +1,15 @@
+CACHE MANIFEST
+# v0.0.1
+CACHE:
+favicon.ico
+index.html
+assets/css/style.css
+assets/core/global.js
+assets/core/PhaserGame.js
+assets/lib/phaser-2.2.2.min.js
+assets/stage/1/background-640x360.jpg
+assets/stage/1/config.json
+assets/stage/1/basketball.png
+assets/stage/1/paddle.png
+NETWORK:
+*

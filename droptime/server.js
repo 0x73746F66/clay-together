@@ -2,13 +2,13 @@ var express    = require('express');
 var bodyParser = require('body-parser');
 var app        = express();
 var router     = express.Router();
-var port       = process.env.PORT || 3000; // set our port
+var port       = process.env.PORT || 3001; // set our port
 var version    = '0.0.1-dev';
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use('/phaser', express.static(__dirname + '/phaser'));
-app.use('/phaser/offline.appcache', function(req, res) {
+app.use('/droptime', express.static(__dirname + '/client'));
+app.use('/droptime/offline.appcache', function(req, res) {
   res.setHeader("Content-Type", "text/cache-manifest");
   res.send('CACHE MANIFEST\n\
     # v'+version+'\n\
@@ -47,16 +47,6 @@ router.use(function(req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   next();
 });
-
-var Game      = require('./Game.js');
-
-// test route to make sure everything is working (accessed at GET http://localhost:3000/api)
-router.get('/', function(req, res) {
-  res.json({ message: 'hooray! welcome to our api!' });
-});
-
-// REGISTER OUR ROUTES -------------------------------
-app.use('/api', router);
 
 // START THE SERVER
 // =============================================================================
