@@ -3,15 +3,15 @@ window.onload = function() {
     "use scrict";
     // get dimensions of the window considering retina displays
     var currentLevel = 1,
-        w = document.body.offsetWidth,
-        h = document.body.offsetHeight,
+        w = window.innerWidth,
+        h = window.innerHeight,
         width = h > w ? h : w,
         height = h > w ? w : h,
         game = new Phaser.Game(width < 800 ? 800 : width, height < 600 ? 600 : height, Phaser.CANVAS, 'game');
 
     function resizeGame (event) {
-      var width = document.body.offsetWidth;
-      var height = document.body.offsetheight;
+      var width = window.innerWidth;
+      var height = window.innerHeight;
       game.width = width;
       game.height = height;
       game.stage.bounds.width = width;
