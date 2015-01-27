@@ -177,10 +177,10 @@ window.onload = function() {
        * @method gofull
        */
       gofull: function () {
-        /* if (!this.scale.isFullScreen) {
+        if (!this.scale.isFullScreen) {
           this.scale.startFullScreen(false);
           info("full screen mode");
-        } */
+        }
       }
     };
     game.state.add('Game', PhaserGame, true);
