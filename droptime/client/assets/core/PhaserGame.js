@@ -9,7 +9,12 @@ window.onload = function() {
         h = window.innerHeight,
         width = h > w ? h : w,
         height = h > w ? w : h,
-        game = new Phaser.Game(DEFAULT_WIDTH, DEFAULT_HEIGHT, Phaser.CANVAS, '');
+        game = new Phaser.Game(
+          width > DEFAULT_WIDTH ? width : DEFAULT_WIDTH,
+          height > DEFAULT_HEIGHT ? height : DEFAULT_HEIGHT,
+          Phaser.CANVAS,
+          'game'
+        );
 
     /**
      * Class definition
@@ -86,7 +91,6 @@ window.onload = function() {
         this.stage.scaleMode.forceLandscape = true;
         this.scale.setScreenSize(true);
         this.input.onDown.add(this.start, this);
-        this.input.onDown.add(this.gofull, this);
       },
       /**
        * Core update loop. Handles collision checks and player input.
@@ -115,6 +119,10 @@ window.onload = function() {
        * @method start
        */
       start: function () {
+        if(!this.game.scale.isFullScreen) {
+          this.game.scale.startFullScreen();
+          return;
+        }
         var self = this;
         if (!self.live) {
           self.live = true;
@@ -170,17 +178,6 @@ window.onload = function() {
         delete this.liveItems[this.liveItems.indexOf(instance)];
         instance.kill();
         this.scoreText.setText('Score: ' + this.userPoints);
-      },
-      /**
-       * Will fire on load and anytime any input is registered
-       *
-       * @method gofull
-       */
-      gofull: function () {
-        if (!this.scale.isFullScreen) {
-          this.scale.startFullScreen(false);
-          info("full screen mode");
-        }
       }
     };
     game.state.add('Game', PhaserGame, true);
