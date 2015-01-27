@@ -37,6 +37,19 @@ http://ec2-54-66-193-144.ap-southeast-2.compute.amazonaws.com:3000/play/
 
 ![in game image](http://globalgamejam.org/sites/default/files/styles/game_content__wide/public/games/screenshots/capture1_5.png?itok=jrOfDQe0)
 
+# Techonolgy Used;
+
+- Simple HTML
+- JavaScript and jQuery
+- Node.js server with Express.js framework and body-parser from npm.
+
+## To run the game locally:
+
+- Ensure no other local server is running (nginx or apache) on localhost port 3000.
+- In the server folder run npm install
+- Start the node.js server using the script: /server/server.js
+- visit http://localhost:3000/play/ in any desktop browser.
+
 # Droptime 
 
 ![hosted image](http://s6.postimg.org/xuuvi6ki9/droptime.png)
@@ -52,3 +65,23 @@ Collect as many basketballs in your basket before the 1 minute timer runs out.
 - Some apple devices are not prompting for full screen permissions and therefore cannot run the game properly.
 - Must be played landscape mode.
 - Full Offline support: the Game will still load and work when wifi and mobile network are disabled.
+
+## Techonolgy Used;
+
+- phaser.io (http://phaser.io/)
+- HTML5 .appcache (for offline support)
+- HTML5 localstorage (with browser cookie fallback)
+
+## To run the game locally:
+
+### For best experience;
+
+- Ensure no other local server is running (nginx or apache) on localhost port 3001.
+- In the droptime folder run npm install
+- Start the node.js server using the script server.js
+- visit http://localhost:3001/droptime/ in any mobile phone browser, or desktop browser emulating a mobile broswer.
+- go landscape and tap once to start in fullscreen.
+
+### Alternative, no server method;
+
+Open /droptime/client/index.html in any desktop browser capable of emulating a mobile browser.
