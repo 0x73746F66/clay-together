@@ -3,7 +3,7 @@ var bodyParser = require('body-parser');
 var app        = express();
 var router     = express.Router();
 var port       = process.env.PORT || 3001; // set our port
-var version    = '0.0.4-dev';
+var version    = '0.0.4';
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
