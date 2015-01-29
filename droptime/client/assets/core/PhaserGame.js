@@ -25,8 +25,9 @@ window.onload = function() {
       this.paddle = null;
       this.stageConfig = null;
       this.userPoints = 0;
-      this.stageTimer = 60;
-      this.limitTimer = 60;
+      this.stageTimer = 0;
+      this.stageTimerMultiplier = 30;
+      this.difficaulty = 0.5;
       this.stageTimerInterval;
       this.introText = null;
       this.scoreText = null;
@@ -67,7 +68,7 @@ window.onload = function() {
           fill: this.stageConfig.font,
           align: "left"
         });
-        this.timerText = this.add.text(520, this.game.height-30, 'Timer: ' + this.limitTimer, {
+        this.timerText = this.add.text(520, this.game.height-30, 'Timer: ' + this.stageTimer, {
           font: "20px Arial",
           fill: this.stageConfig.font,
           align: "left"
@@ -107,6 +108,7 @@ window.onload = function() {
           if (this.liveItems.length <= 1) {
             this.dropItem('item');
           }
+          //@TODO need a way to reduce the liveItems at instance.kill()
           for(var i=0;i<this.liveItems.length;i++){
             this.physics.arcade.collide(this.liveItems[i], this.paddle, this.caught, null, this);
           }
@@ -124,6 +126,7 @@ window.onload = function() {
         var self = this;
         if (!self.live) {
           self.live = true;
+          self.stageTimer = Math.ceil((self.stageTimerMultiplier*self.difficaulty).toFixed()/10)*10;
           self.introText.setText('GO!');
           self.stageTimerInterval = setInterval(function(){
             self.stageTimer--;
@@ -142,7 +145,7 @@ window.onload = function() {
           //self.paddle.body.bounce.set(1);
           self.paddle.body.immovable = true;
 
-          for (var j=0; j<self.loadedItem.limit; j++) {
+          for (var j=0; j<(self.loadedItem.limit*self.difficaulty); j++) {
             setTimeout(function(){self.dropItem('item');}, rand(500,(1000*(self.stageTimer-1))+500));
           }
         }
@@ -154,12 +157,14 @@ window.onload = function() {
         instance.checkWorldBounds = true;
         instance.body.collideWorldBounds = true;
         instance.body.bounce.set(1);
-        instance.body.gravity.y = rand(150,250);
+        var slowest = 100*this.difficaulty;
+        var fastest = 300*this.difficaulty;
+        instance.body.gravity.y = rand(slowest,fastest  );
         instance.events.onOutOfBounds.add(this.missed, this);
         this.liveItems.push(instance);
       },
       missed: function (instance) {
-        delete this.liveItems[this.liveItems.indexOf(instance)];
+        //delete this.liveItems[this.liveItems.indexOf(instance)];
         instance.kill();
       },
       stageOver: function () {
@@ -168,12 +173,12 @@ window.onload = function() {
         this.introText.setText('Game Over\nYou caught '+this.userPoints);
         this.paddle = null;
         this.userPoints = 0;
-        this.stageTimer = 30+this.limitTimer;
+        this.difficaulty = ((this.difficaulty/1.25)*2).toFixed(1);
         this.liveItems = [];
       },
       caught: function (instance) {
         this.userPoints = parseInt(this.userPoints)+1; //parseInt(instance.catchValue);
-        delete this.liveItems[this.liveItems.indexOf(instance)];
+        //delete this.liveItems[this.liveItems.indexOf(instance)];
         instance.kill();
         this.scoreText.setText('Score: ' + this.userPoints);
       }
