@@ -9,7 +9,7 @@ var MemoryStore = {length:0};
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use('/play', express.static(__dirname + '/client'));
+app.use('/', express.static(__dirname + '/client'));
 
 // middleware to use for all requests
 router.use(function(req, res, next) {
