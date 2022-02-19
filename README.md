@@ -13,18 +13,6 @@ http://globalgamejam.org/2015/games/clay-together
 Clay together is a top down co-op puzzler.
 Work together to solve puzzles, or go rouge to prevent your team from completing hte puzzle for some fun.
 
-## Playing Clay together
-
-http://goo.gl/OGEUZL
-
-or
-
-http://ec2-54-66-193-144.ap-southeast-2.compute.amazonaws.com/play/
-
-or
-
-http://ec2-54-66-193-144.ap-southeast-2.compute.amazonaws.com:3000/play/
-
 ## Instructions
 
 - To start playing you need to arrange with 3 others, a minimum of 4 players are needed to start playing.
@@ -48,4 +36,4 @@ http://ec2-54-66-193-144.ap-southeast-2.compute.amazonaws.com:3000/play/
 - Ensure no other local server is running (nginx or apache) on localhost port 3000.
 - run `npm install`
 - Start the server using: `node server.js`
-- visit http://localhost:3000/play/ in any desktop browser.
+- visit http://localhost:3000/ in any desktop browser.
